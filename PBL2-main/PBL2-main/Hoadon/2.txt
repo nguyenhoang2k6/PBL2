@@ -1,0 +1,7 @@
+Ngay thu ngan: 16/11/2025
+Nhan vien thu ngan: NV001
+Ten mon                       So luong  Don gia   Thanh tien
+---------------------------------------------------------------
+Tra sua chan trau             5         24000     120000    
+---------------------------------------------------------------
+Tong gia tien: 120000
