@@ -67,194 +67,152 @@ ostream& operator<<(ostream& out,const Hoadon &p){
     return out;
 }
 
-void Cashier(Hoadon &p,const string &maNV){
-    // Reset hóa đơn
+int Cashier(Hoadon &p,const string &maNV){
     p.total = 0;
     p.price = 0;
-    
-    Nhapngay:
-    cout<<"Nhap ngay thu ngan: ";cin>>p.day>>p.month>>p.year;
-    if(KiemTraNgay(p.day,p.month,p.year)==0){
-        TextColor5(12);cout<<"\nNgay,thang,nam khong hop le\n";TextColor5(7);
-        cout<<"\nBan co muon nhap lai ngay thu ngan (y/n) : ";
-        char t;cin>>t;
-        if(t=='y'){
-            system("cls");
-            goto Nhapngay;
-        }
-        return;
+
+    // Nhập ngày
+    cout << "Nhap ngay thu ngan (d m y): ";
+    cin >> p.day >> p.month >> p.year;
+
+    if (KiemTraNgay(p.day, p.month, p.year) == 0) {
+        TextColor5(12);
+        cout << "\nNgay thang nam khong hop le!\n";
+        TextColor5(7);
+        return -1;          // ❗ TRẢ VỀ LỖI
     }
-    
+
     p.maNV = maNV;
-    cout<<"Nhap ma hoa don: ";cin>>p.maHD;
-    
-    while (check_exist(p.maHD)){
-        cout<<"Ma da duoc su dung, vui long nhap lai: ";
-        cin>>p.maHD;
+
+    // Nhập mã hóa đơn
+    cout << "Nhap ma hoa don: ";
+    cin >> p.maHD;
+    while (check_exist(p.maHD)) {
+        cout << "Ma da ton tai, moi nhap lai: ";
+        cin >> p.maHD;
     }
-    
-    bool continueAdding = true;
-    while(continueAdding){
-        Cont:
+
+    bool running = true;
+
+    while (running) {
         system("cls");
-        Item *x=new Item[MAX];
-        display(x);
-        int n=getInfo(x);
-        
-        cout<<"Nhap ma mat hang: ";
-        string line;
-        cin>>line;
-        
-        if(check_maItem(x,line)==0){
-            TextColor5(12); cout<<"Ma Item nay khong ton tai";TextColor5(7); 
-            cout<<"\n\nBan co muon nhap lai ma Item ? (y/n) : ";
-            char t;cin>>t;
-            if(t=='y'){
-                delete [] x;
-                goto Cont;
-            } else {
-                delete [] x;
-                continueAdding = false;
+
+        Item *x = new Item[MAX];
+        display(x);              // hiện menu
+        int n = getInfo(x);      // số lượng item trong menu
+
+        string maItem;
+        cout << "Nhap ma mat hang: ";
+        cin >> maItem;
+
+        int pos = -1;
+        for (int i = 0; i < n - 1; i++) {
+            if (maItem == x[i].getmaItem()) {
+                pos = i;
                 break;
             }
         }
-        
-        // Tìm item và thêm vào hóa đơn
-        bool itemFound = false;
-        for (int i=0;i<n-1;i++){
-            if(line == x[i].getmaItem()){
-                // Kiểm tra xem item đã có trong hóa đơn chưa
-                bool itemExists = false;
-                for(int j=0;j<p.total;j++){
-                    if(p.Menu[j].getmaItem() == line){
-                        // Item đã tồn tại, cập nhật số lượng
-                        cout<<"Nhap so luong: ";
-                        int newQuantity;
-                        cin>>newQuantity;
-                        p.soluong[j] += newQuantity;
-                        itemExists = true;
-                        break;
-                    }
-                }
-                
-                if(!itemExists){
-                    // Item mới, thêm vào hóa đơn
-                    p.Menu[p.total] = x[i];
-                    cout<<"Nhap so luong: ";
-                    cin>>p.soluong[p.total];
-                    p.total++;
-                }
-                itemFound = true;
+
+        if (pos == -1) {
+            TextColor5(12);
+            cout << "\nMa Item khong ton tai!\n";
+            TextColor5(7);
+
+            delete [] x;
+            break;  // THOÁT
+        }
+
+        bool exists = false;
+        for (int i = 0; i < p.total; i++) {
+            if (p.Menu[i].getmaItem() == maItem) {
+                cout << "Nhap so luong them: ";
+                int sl;
+                cin >> sl;
+                p.soluong[i] += sl;
+                exists = true;
                 break;
             }
         }
-        
+
+        if (!exists) {
+            cout << "Nhap so luong: ";
+            cin >> p.soluong[p.total];
+            p.Menu[p.total] = x[pos];
+            p.total++;
+        }
+
         delete [] x;
-        
-        if(!itemFound){
-            TextColor5(12); cout<<"Khong tim thay mat hang!";TextColor5(7);
-        }
-        
-        // Tính lại tổng tiền
+
+        // Cập nhật tổng tiền
         p.price = 0;
-        for(int i=0;i<p.total;i++){
+        for (int i = 0; i < p.total; i++)
             p.price += p.soluong[i] * p.Menu[i].getprice();
-        }
-        
-        // Hiển thị hóa đơn tạm thời
+
+        // In tạm thời
         system("cls");
-        cout<<"=== HOA DON TAM THOI ==="<<endl;
-        cout<<setw(30)<<left<<"Ten mon";
-        cout<<setw(10)<<left<<"So luong";
-        cout<<setw(10)<<left<<"Don gia";
-        cout<<setw(10)<<left<<"Thanh tien"<<endl;
-        cout<<"---------------------------------------------------"<<endl;
-        for(int i=0;i<p.total;i++){
-            cout<<setw(30)<<left<<p.Menu[i].getTenItem();
-            cout<<setw(10)<<left<<p.soluong[i];
-            cout<<setw(10)<<left<<p.Menu[i].getprice();
-            cout<<setw(10)<<left<<p.soluong[i]*p.Menu[i].getprice()<<endl;
+        cout << "=== HOA DON TAM THOI ===\n";
+        for (int i = 0; i < p.total; i++) {
+            cout << setw(30) << left << p.Menu[i].getTenItem()
+                 << setw(10) << left << p.soluong[i]
+                 << setw(10) << left << p.Menu[i].getprice()
+                 << setw(10) << left << p.soluong[i] * p.Menu[i].getprice()
+                 << endl;
         }
-        cout<<"---------------------------------------------------"<<endl;
-        cout<<"Tong tam tinh: "<<p.price<<endl;
-        
-        cout<<"\nThem mon khac?\n1. Co\n2. Khong - Thanh toan\nLua chon: ";
-        int choice;
-        cin>>choice;
-        if(choice == 2){
-            continueAdding = false;
-        }
+        cout << "\nTong tam tinh: " << p.price << endl;
+
+        cout << "\n1. Them mon\n2. Thanh toan\nLua chon: ";
+        int c; 
+        cin >> c;
+        if (c == 2) running = false;
     }
-    
-    // Lưu hóa đơn và log
-    ofstream file;
-    file.open("Hoadon/"+p.maHD+".txt");
-    file<<p;
+
+    // Lưu hóa đơn
+    ofstream file("Hoadon/" + p.maHD + ".txt");
+    file << p;
     file.close();
 
-    ofstream log;
-    log.open("History/log.txt",ios::app);
-    log<<p.day<<" "<<p.month<<" "<<p.year<<" "<<p.maNV<<" "<<p.maHD<<" "<<p.price<<endl;
+    // Lưu lịch sử
+    ofstream log("History/log.txt", ios::app);
+    log << p.day << " " << p.month << " " << p.year << " "
+        << p.maNV << " " << p.maHD << " " << p.price << endl;
     log.close();
 
-    // Hiển thị hóa đơn cuối cùng
+    // In hóa đơn cuối
     system("cls");
-    cout<<"=== HOA DON CHINH THUC ==="<<endl;
-    read("Hoadon/"+p.maHD+".txt");
-    cout<<"\nHoa don da duoc luu thanh cong!"<<endl;
-    // KHÔNG CÓ LỆNH TẠM DỪNG Ở ĐÂY
+    cout << "=== HOA DON CHINH THUC ===\n";
+    read("Hoadon/" + p.maHD + ".txt");
+
+    return p.price;         //  TRẢ VỀ TỔNG TIỀN
 }
 
-void display(Hoadon &p){
-    hoadon:
-    ifstream in;
-    in.open("history/log.txt");
-    int day,month,year,price;
-    string maNV,maHD;
-    
-    cout<<endl;
-    cout<<"+----------------------------------------------------------+"<<endl;
-    cout<<"|  Ma Hoa Don"<<"\t|\t"<<"Thoi gian thuc hien giao dich      |"<<endl;
-    cout<<"+----------------------------------------------------------+"<<endl;
-    
-    while(in>>day>>month>>year>>maNV>>maHD>>price){
-        if(day<10 && month<10){
-            cout<<"|  "<<maHD<<"\t|\t"<<day<<"/"<<month<<"/"<<setw(21)<<left<<year<<setw(11)<<right<<"|"<<endl;
-        }
-        else if(day<10){
-            cout<<"|  "<<maHD<<"\t|\t"<<day<<"/"<<month<<"/"<<setw(21)<<left<<year<<setw(10)<<right<<"|"<<endl;
-        }
-        else if(month<10){
-            cout<<"|  "<<maHD<<"\t|\t"<<day<<"/"<<month<<"/"<<setw(21)<<left<<year<<setw(10)<<right<<"|"<<endl;
-        }
-        else {
-            cout<<"|  "<<maHD<<"\t|\t"<<day<<"/"<<month<<"/"<<setw(20)<<left<<year<<setw(10)<<right<<"|"<<endl;
-        }
-    }
-    cout<<"+----------------------------------------------------------+"<<endl;
+
+bool display(Hoadon &p) {
+    ifstream in("History/log.txt");
+    if (!in) return false;
+
+    int d, m, y, price;
+    string maNV, maHD;
+
+    cout << "\n+----------------------------------------------------------+\n";
+    cout << "|  Ma Hoa Don  |     Thoi gian thuc hien giao dich        |\n";
+    cout << "+----------------------------------------------------------+\n";
+
+    cout << "+----------------------------------------------------------+\n";
     in.close();
-    
-    cout<<"\nChon hoa don can xem: ";
-    string maHD1;
-    cin>>maHD1;
-    
-    if(!check_exist(maHD1)){
-        TextColor5(12); cout<<"\nHoa don nay khong ton tai"; TextColor5(7);
-        cout<<"\nBan co muon tiep tuc xem hoa don? (y/n) : ";
-        char t;cin>>t;
-        if(t=='y'){
-            system("cls");
-            goto hoadon;
-        }
+
+    cout << "\nNhap ma hoa don can xem: ";
+    string choose;
+    cin >> choose;
+
+    if (!check_exist(choose)) {
+        TextColor5(12);
+        cout << "Hoa don khong ton tai!\n";
+        TextColor5(7);
+        return false;
     }
-    else{
-        system("cls");
-        read("Hoadon/"+maHD1+".txt");
-        cout<<"\nBan co muon tiep tuc xem hoa don? (y/n) : ";
-        char t;cin>>t;
-        if(t=='y'){
-            system("cls");
-            goto hoadon;
-        }
-    }
+
+    system("cls");
+    read("Hoadon/" + choose + ".txt");
+
+    return true;
 }

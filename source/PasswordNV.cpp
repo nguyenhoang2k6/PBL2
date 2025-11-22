@@ -13,52 +13,27 @@ void TextColor7(int x){
 }
 
 
-std::string Staff(){
-    string _Username,_Pass,username,pass;
+// Hàm này chỉ có trách nhiệm xác thực, KHÔNG hiển thị giao diện hay xử lý lỗi
+bool Staff(string _Username, string _Pass){
     ifstream in;
-    bool found=false;
     in.open("Password/staff.txt");
-    cout<<"\n\n\n";
-	cout<<"\t\t\t\t\t\t\t+-------------------+"<<endl;
-	cout<<"\t\t\t\t\t\t\t|    -LOGIN NOW-    |"<<endl;
-	cout<<"\t\t\t\t\t\t\t+-------------------+"<<endl;
-	cout<<"\n\n";
-    cout<<"\t\t\t\t\t\tUsername : ";cin>>_Username;
-    cout<<"\n";
-    cout<<"\t\t\t\t\t\tPassword : ";
-    passInput(_Pass);
-    while(in>>username>>pass){
-        if (_Username==username&&pass==_Pass) {
-            found =true;
-            break;}
+    
+    // Bổ sung: Kiểm tra nếu file không mở được
+    if (!in.is_open()) {
+        // In ra lỗi hoặc xử lý phù hợp
+        return false; 
     }
-    if (found)
-    {
-        cout<<"\n\n\t\t\t\t\t\t\tLogged in successfully!\n";
-    }
-    else {
-        cout<<"\n\n\t\t\t\t\t\t  Username or Password is incorrect";
-        cout<<"\n\n\t\t\t\t\t\t\t    -Notification-";
-        cout<<"\n\t\t\t\t\t\t\t+--------------------+";
-	    cout<<"\n\t\t\t\t\t\t\t|   1.Login again    |";
-	    cout<<"\n\t\t\t\t\t\t\t|   2.Exit           |";
-	    cout<<"\n\t\t\t\t\t\t\t+--------------------+";
-	    cout<<"\n\n\t\t\t\t\t\tYour choice : ";
-    char d;cin>>d;
-    switch(d){
-        case '1':{
-            system("cls");
-            Staff();
-            break;
-        }
-        case '2':{
-            exit(0);
-            break;
+    
+    string username, pass;
+    while(in >> username >> pass){
+        if (_Username == username && _Pass == pass) {
+            in.close();
+            return true; // Xác thực thành công
         }
     }
-    }
+    
     in.close();
-    return _Username;
+    return false; // Không tìm thấy tài khoản
 }
 
 void resetPassNV(const string &username){
