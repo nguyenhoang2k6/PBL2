@@ -1,0 +1,8 @@
+Ngay thu ngan: 10/6/2025
+Nhan vien thu ngan: NV010
+Ten mon                       So luong  Don gia   Thanh tien
+---------------------------------------------------------------
+Tra sua chan trau             3         24000     72000     
+Cafe                          2         18000     36000     
+---------------------------------------------------------------
+Tong gia tien: 108000
