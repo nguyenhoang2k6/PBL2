@@ -1,10 +1,10 @@
-#include "PasswordNV.h"
-#include<iostream>
-#include<fstream>
-#include<sstream>
-#include<string>
-#include<conio.h>
-#include<Windows.h>
+#include "app/PasswordNV.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdio> 
+#include <Windows.h> 
+
 using namespace std;
 
 void TextColor7(int x){
@@ -12,15 +12,12 @@ void TextColor7(int x){
     SetConsoleTextAttribute( color , x );
 }
 
-
 // Hàm này chỉ có trách nhiệm xác thực, KHÔNG hiển thị giao diện hay xử lý lỗi
-bool Staff(string _Username, string _Pass){
+bool Staff(const string& _Username, const string& _Pass){
     ifstream in;
     in.open("Password/staff.txt");
     
-    // Bổ sung: Kiểm tra nếu file không mở được
     if (!in.is_open()) {
-        // In ra lỗi hoặc xử lý phù hợp
         return false; 
     }
     
@@ -36,14 +33,22 @@ bool Staff(string _Username, string _Pass){
     return false; // Không tìm thấy tài khoản
 }
 
-void resetPassNV(const string &username){
-    string _Pass,_Username,pass,newpass,data;
-    ifstream on;
+ResetStatusNV resetPassNV(
+    const std::string& username, 
+    const std::string& currentPass, 
+    const std::string& newPass, 
+    const std::string& retypePass
+){
+    string _Username, pass_from_file;
     bool userFound = false;
     
+    // 1. Tìm kiếm và lấy mật khẩu hiện tại
+    ifstream on;
     on.open("Password/staff.txt");
-    while(on>>_Username>>pass){
-        if (username==_Username) {
+    if (!on.is_open()) return FILE_IO_ERROR_NV;
+
+    while(on >> _Username >> pass_from_file){
+        if (username == _Username) {
             userFound = true;
             break;
         }
@@ -51,84 +56,53 @@ void resetPassNV(const string &username){
     on.close();
     
     if (!userFound) {
-        cout<<"\n\n\t\t\t\t\t\tUser not found!";
-        return;
+        return USER_NOT_FOUND_NV;
     }
     
-    Reset:
-    cout<<"\n\n\n";
-	cout<<"\t\t\t\t\t\t\t+--------------------------+"<<endl;
-	cout<<"\t\t\t\t\t\t\t|     -RESET PASSWORD-     |"<<endl;
-	cout<<"\t\t\t\t\t\t\t+--------------------------+"<<endl;
-    cout<<"\n\n\t\t\t\t\tPlease input current password : ";
-    passInput(_Pass);
+    // 2. Kiểm tra mật khẩu hiện tại
+    if (currentPass != pass_from_file){
+        return INCORRECT_CURRENT_PASS_NV;
+    }
     
-    if (_Pass==pass){
-        data="";
-        newpass="";
-        cout<<"\n\n\t\t\t\t\t\t\t New password : ";
-        passInput(newpass);
-        cout<<"\n\n\t\t\t\t\t     Retype your new password : ";
-        passInput(data);
-        
-        if (newpass==data){
-            cout<<"\n\n\t\t\t\t\t\t\tSuccessful change\n\n";
-            ofstream out;
-            out.open("Password/temp.txt",ios::out);
-            ifstream in;
-            in.open("Password/staff.txt");
-            while(in>>_Username>>pass){
-                if (username==_Username){
-                    out<<_Username<<" "<<newpass<<endl;
-                }
-                else out<<_Username<<" "<<pass<<endl;
-            }
-            in.close();
-            out.close();
-            remove("Password/staff.txt");
-            rename("Password/temp.txt","Password/staff.txt");
+    // 3. Kiểm tra mật khẩu mới
+    if (newPass != retypePass){
+        return NEW_PASSWORDS_MISMATCH_NV;
+    }
+
+    // 4. Thực hiện ghi mật khẩu mới vào file (dùng temp file)
+    ofstream out;
+    out.open("Password/temp.txt", ios::out);
+    if (!out.is_open()) return FILE_IO_ERROR_NV;
+
+    ifstream in;
+    in.open("Password/staff.txt");
+    if (!in.is_open()) { 
+        out.close(); 
+        return FILE_IO_ERROR_NV; 
+    }
+    
+    string u, p;
+    while(in >> u >> p){
+        if (username == u){
+            out << u << " " << newPass << endl; // Ghi mật khẩu mới
         }
-        else{
-            cout<<"\n\n\t\t\t\t\t\tNew password is incorrect,try again?";
-            cout<<"\n\n\t\t\t\t\t\t\t       -Notification-";
-            cout<<"\n\t\t\t\t\t\t\t   +--------------------+";
-	        cout<<"\n\t\t\t\t\t\t\t   |   1.Yes            |";
-	        cout<<"\n\t\t\t\t\t\t\t   |   2.No             |";
-	        cout<<"\n\t\t\t\t\t\t\t   +--------------------+";
-	        cout<<"\n\n\t\t\t\t\t\tYour choice ";
-            char d; cin>>d;
-            switch(d){
-                case '1':{
-                    system("cls");
-                    goto Reset;
-                    break;
-                }
-                case '2':{
-                    system("cls");
-                    break;
-                }
-            }            
+        else {
+            out << u << " " << p << endl; // Giữ lại các tài khoản khác
         }
     }
-    else{
-        cout<<"\n\n\t\t\t\t\t\t  Incorrect Password"; 
-        cout<<"\n\n\t\t\t\t\t\t\t      -Notification-";
-        cout<<"\n\t\t\t\t\t\t\t   +---------------------+";
-	    cout<<"\n\t\t\t\t\t\t\t   |     1.Try again     |";
-	    cout<<"\n\t\t\t\t\t\t\t   |     2.Return        |";
-	    cout<<"\n\t\t\t\t\t\t\t   +---------------------+";
-	    cout<<"\n\n\t\t\t\t\t\tYour choice : ";
-        char t; cin>>t;
-        switch(t){
-            case '1':{
-                system("cls");
-                goto Reset;
-                break;
-            }
-            case '2':{
-                return;
-                break;
-            }
-        }
+    
+    in.close();
+    out.close();
+    
+    // 5. Thay thế file
+    if (remove("Password/staff.txt") != 0) {
+        // Xử lý lỗi xóa file gốc nếu cần
+        return FILE_IO_ERROR_NV; 
     }
+    if (rename("Password/temp.txt", "Password/staff.txt") != 0) {
+        // Xử lý lỗi đổi tên file nếu cần
+        return FILE_IO_ERROR_NV;
+    }
+
+    return RESET_SUCCESS_NV; // Thành công
 }

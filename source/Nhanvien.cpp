@@ -1,277 +1,268 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<stdlib.h>
-#include<windows.h>
-#include "app/Nhanvien.h"
-#define N 100
-using namespace std;
-void InLine1(int n){
-    for (int i = 0; i < n; i++) 
-        cout<<"=";
-}
-void TextColor1(int x)
-{
-	HANDLE mau;
-	mau = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(mau,x);
-}
-std::ostream& operator <<(std::ostream &out ,const Nhanvien &p){
-    out<<p.maNV<<endl;
-    out<<p.name<<endl;
-    out<<p.chucvu<<endl;
-    out<<p.age<<endl;
-    out<<p.address<<endl;
-    out<<p.sdt<<endl;
-    return out;
-}
-bool check_exist(const Nhanvien &x){
-    Nhanvien* p=new Nhanvien[1000];
-    int n=getInfo(p);
-    for (int i=0;i<n-1;i++){
-        if (x.maNV==p[i].maNV) return 1;
-    }
-    return 0;
-    delete [] p;
-}
-std::istream& operator >>(std::istream &in,Nhanvien &p){
-    cout<<"Nhap ma nhan vien: ";getline(cin,p.maNV);
-    while(check_exist(p)){
-        cout<<"Ma nhan vien da ton tai, nhap lai: ";getline(cin,p.maNV);
-    }
-    cout<<"Nhap ten: ";getline(cin,p.name);
-    cout<<"Nhap tuoi: ";cin>>p.age;getchar();
-    cout<<"Nhap chuc vu: ";getline(cin,p.chucvu);
-    cout<<"Nhap dia chi: ";getline(cin,p.address);
-    cout<<"Nhap so dien thoai: ";getline(cin,p.sdt);
-    return in;
-}
-void Nhanvien:: setmaNV(string maNV){ 
-    this->maNV=maNV;
-}
-string Nhanvien:: getmaNV(){
-    return maNV;
-}
-void Nhanvien:: setChucvu(string chucvu){
-    this->chucvu=chucvu;
-}
-string Nhanvien:: getChucvu(){
-    return chucvu;
-}
-void Nhanvien:: setName(string name){
-    this->name=name;
-}
-string Nhanvien:: getName(){
-    return name;
-}
-void Nhanvien:: setAge(int age){
-    this->age=age;
-}
-int Nhanvien:: getAge(){
-    return age;
-}
-void Nhanvien:: setAddress(string address){
-    this->address=address;
-}
-string Nhanvien:: getAddress(){
-    return address;
-}
-void Nhanvien:: setSDT(string sdt){
-    this->sdt=sdt;
-}
-string Nhanvien:: getSDT(){
-    return sdt;
-}
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iomanip> // Dùng cho setw trong operator << (nếu cần)
+#include <stdlib.h>
+#include "app/Nhanvien.h" // Giả định Nhanvien.h chứa định nghĩa class Nhanvien
 
+// Không cần các thư viện và hàm liên quan đến UI/Windows nữa
+// using namespace std; // Tốt hơn là dùng std::
+
+// Hằng số N không còn cần thiết nếu sử dụng cấp phát động
+
+// --------------------------- HÀM TIỆN ÍCH DỮ LIỆU ----------------------------
+
+/**
+ * @brief Đọc thông tin tất cả nhân viên từ file "Nhanvien/Nhanvien.txt" 
+ * và lưu vào mảng con trỏ p.
+ * @param p Con trỏ tới mảng Nhanvien để lưu dữ liệu.
+ * @return Số lượng nhân viên đã đọc (bao gồm cả dòng trống cuối file nếu có).
+ */
 int getInfo(Nhanvien* p){
-    ifstream myFile;
+    std::ifstream myFile;
+    // Mở file ở chế độ nhị phân (ios::binary) thường không cần thiết 
+    // trừ khi xử lý binary data, ta dùng mặc định (text mode)
     myFile.open("Nhanvien/Nhanvien.txt");
     if (!myFile.is_open()){
-        cout<<"Khong mo duoc file";
-        system("exit");
+        // Thay vì cout và exit, chỉ nên trả về 0 hoặc ném exception trong môi trường logic
+        return 0; 
     }
-    int total=0;
+    int total = 0;
     
+    // Đảm bảo không đọc quá giới hạn của mảng p nếu p được cấp phát tĩnh
+    // Giả định mảng p đủ lớn (ví dụ: 1000 phần tử)
     while (!myFile.eof()){
-        string line;
-        getline(myFile,p[total].maNV);
-        getline(myFile,p[total].name);
-        getline(myFile,p[total].chucvu);
-        getline(myFile,line);
-        stringstream geek(line);
-        geek>>p[total].age;
-        getline(myFile,p[total].address);
-        getline(myFile,p[total].sdt);
+        std::string line;
+        // Đọc từng trường dữ liệu
+        std::getline(myFile, p[total].maNV);
+        if (p[total].maNV.empty() && myFile.eof()) break; // Thoát nếu gặp dòng trống cuối file
+
+        std::getline(myFile, p[total].name);
+        std::getline(myFile, p[total].chucvu);
+        
+        std::getline(myFile, line);
+        std::stringstream geek(line);
+        geek >> p[total].age;
+        
+        std::getline(myFile, p[total].address);
+        std::getline(myFile, p[total].sdt);
+        
         total++;
-        continue;
     }
+    myFile.close();
     return total;
 }
-int check_maNV(Nhanvien *p,string ma){
-    int total=getInfo(p);cout<<endl;
-    int check=0;
-    for (int i=0;i<total-1;i++){
-        if(ma==p[i].maNV){
-           check=1;
+
+/**
+ * @brief Kiểm tra xem mã nhân viên (maNV) của đối tượng x đã tồn tại trong file chưa.
+ * @param x Đối tượng Nhanvien cần kiểm tra mã.
+ * @return true nếu mã đã tồn tại, false nếu ngược lại.
+ */
+bool check_exist(const Nhanvien &x){
+    // Cấp phát động
+    Nhanvien* p = new Nhanvien[1000]; 
+    int n = getInfo(p);
+    bool exists = false;
+    
+    // Vòng lặp chỉ nên đến n (tổng số phần tử hợp lệ)
+    for (int i = 0; i < n; i++){ 
+        if (x.maNV == p[i].maNV) {
+            exists = true;
+            break; 
+        }
+    }
+    
+    delete [] p; // Giải phóng bộ nhớ trong mọi trường hợp (khắc phục rò rỉ bộ nhớ)
+    return exists;
+}
+
+/**
+ * @brief Kiểm tra mã nhân viên có tồn tại trong danh sách đã tải (mảng p) không.
+ * Lưu ý: Hàm này tải lại dữ liệu từ file, giống hệt check_exist.
+ * @param p Con trỏ tới mảng Nhanvien (chỉ dùng để tải dữ liệu, không dùng dữ liệu cũ)
+ * @param ma Mã nhân viên cần kiểm tra.
+ * @return 1 nếu mã tồn tại, 0 nếu ngược lại. (Giữ nguyên int để khớp với code cũ)
+ */
+int check_maNV(Nhanvien *p, std::string ma){
+    int total = getInfo(p);
+    int check = 0;
+    for (int i = 0; i < total; i++){ // Lặp đến total
+        if(ma == p[i].maNV){
+           check = 1;
+           break;
         }
     }
     return check;
 }
-void displaydel(Nhanvien*p,string del){
-    int total=getInfo(p);cout<<endl;
-    for (int i=0;i<total-1;i++){
-        if(del==p[i].maNV){
-            cout<<setw(10)<<left<<"MaNV";
-            cout<<setw(30)<<left<<"Ten";
-            cout<<setw(20)<<left<<"Chuc vu";
-            cout<<setw(10)<<left<<"Tuoi";
-            cout<<setw(25)<<left<<"Dia chi";
-            cout<<setw(15)<<left<<"So dien thoai"<<endl;
-            cout<<setw(10)<<left<<p[i].maNV;
-            cout<<setw(30)<<left<<p[i].name;
-            cout<<setw(20)<<left<<p[i].chucvu;
-            cout<<setw(10)<<left<<p[i].age;
-            cout<<setw(25)<<left<<p[i].address;
-            cout<<setw(15)<<left<<p[i].sdt<<endl;
+
+// ----------------------- OVERLOAD OPERATORS (Không UI) ----------------------
+
+/**
+ * @brief Ghi thông tin Nhanvien vào output stream (dùng cho file)
+ */
+std::ostream& operator <<(std::ostream &out ,const Nhanvien &p){
+    out << p.maNV << std::endl;
+    out << p.name << std::endl;
+    out << p.chucvu << std::endl;
+    out << p.age << std::endl;
+    out << p.address << std::endl;
+    out << p.sdt << std::endl;
+    return out;
+}
+
+// operator >> đã bị loại bỏ vì nó hoàn toàn phụ thuộc vào giao diện người dùng (cout/cin)
+
+// ------------------------------ GETTERS & SETTERS ---------------------------
+
+void Nhanvien:: setmaNV(std::string maNV){ 
+    this->maNV = maNV;
+}
+std::string Nhanvien:: getmaNV(){
+    return maNV;
+}
+void Nhanvien:: setChucvu(std::string chucvu){
+    this->chucvu = chucvu;
+}
+std::string Nhanvien:: getChucvu(){
+    return chucvu;
+}
+void Nhanvien:: setName(std::string name){
+    this->name = name;
+}
+std::string Nhanvien:: getName(){
+    return name;
+}
+void Nhanvien:: setAge(int age){
+    this->age = age;
+}
+int Nhanvien:: getAge(){
+    return age;
+}
+void Nhanvien:: setAddress(std::string address){
+    this->address = address;
+}
+std::string Nhanvien:: getAddress(){
+    return address;
+}
+void Nhanvien:: setSDT(std::string sdt){
+    this->sdt = sdt;
+}
+std::string Nhanvien:: getSDT(){
+    return sdt;
+}
+
+// ------------------------------ HÀM CHỨC NĂNG ------------------------------
+
+/**
+ * @brief Thêm một nhân viên mới và mật khẩu vào các file.
+ * @param x Đối tượng Nhanvien cần thêm.
+ * @param pass Mật khẩu của nhân viên.
+ * @return true nếu thêm thành công, false nếu thất bại (ví dụ: không mở được file).
+ */
+bool Add(const Nhanvien& x, const std::string& pass){
+    // Kiểm tra tồn tại trước khi thêm (Logic này nên được giữ)
+    if (check_exist(x)) {
+        return false; // Mã nhân viên đã tồn tại
+    }
+
+    // 1. Thêm mật khẩu
+    std::ofstream out_pass;
+    out_pass.open("Password/staff.txt", std::ios::app);
+    if(!out_pass.is_open()) return false;
+    out_pass << x.maNV << " " << pass << std::endl;
+    out_pass.close();
+
+    // 2. Thêm thông tin nhân viên
+    std::ofstream out_nv;
+    out_nv.open("Nhanvien/Nhanvien.txt", std::ios::app);
+    if(!out_nv.is_open()) return false;
+    out_nv << x;
+    out_nv.close();
+    
+    return true; // Thêm thành công
+}
+
+/**
+ * @brief Xóa một nhân viên khỏi hệ thống bằng mã nhân viên.
+ * @param del_maNV Mã nhân viên muốn xóa.
+ * @return true nếu xóa thành công, false nếu không tìm thấy mã hoặc thất bại trong thao tác file.
+ */
+bool Delete(const std::string& del_maNV){
+    // Tạo mảng tạm để kiểm tra và lấy dữ liệu
+    Nhanvien* p = new Nhanvien[1000];
+    int n = getInfo(p);
+    
+    // 1. Kiểm tra mã nhân viên có tồn tại không
+    int index_to_delete = -1;
+    for (int i = 0; i < n; i++){ 
+        if (del_maNV == p[i].maNV) {
+            index_to_delete = i;
+            break;
         }
     }
-}
-void display(Nhanvien* p){
-    int total=getInfo(p);cout<<endl;
-    InLine1(47);TextColor1(11);
-    cout<<"Danh Sach Nhan Vien";TextColor1(7);
-    InLine1(48);cout<<endl;
-    cout<<"+----------------------------------------------------------------------------------------------------------------+\n";
-    cout<<setw(10)<<left<<"|  MaNV";
-    cout<<setw(30)<<left<<"|         Ho va ten";
-    cout<<setw(20)<<left<<"|      Chuc vu";
-    cout<<setw(10)<<left<<"|  Tuoi";
-    cout<<setw(25)<<left<<"|        Dia chi";
-    cout<<setw(15)<<left<<"|  So dien thoai  |"<<endl;
-    cout<<"+----------------------------------------------------------------------------------------------------------------+\n";
 
-    for (int i=0;i<total-1;i++){
-    cout<<"|  "<<setw(7)<<left<<p[i].maNV;
-    cout<<"|   "<<setw(26)<<left<<p[i].name;
-    cout<<"|      "<<setw(13)<<left<<p[i].chucvu;
-    cout<<"|   "<<setw(6)<<left<<p[i].age;
-    cout<<"|  "<<setw(22)<<left<<p[i].address;
-    cout<<"|   "<<setw(14)<<left<<p[i].sdt<<"|"<<endl;
+    if (index_to_delete == -1) {
+        delete [] p;
+        return false; // Mã nhân viên không tồn tại
     }
-    cout<<"+----------------------------------------------------------------------------------------------------------------+\n";
-}
-void Add(Nhanvien* p){
-    add:
-    string pass;
-    ofstream out;
-    out.open("Password/staff.txt",ios::app);
-    cout<<endl;InLine1(45);TextColor1(11);
-    cout<<"Them  Nhan Vien";TextColor1(7);
-    InLine1(45);cout<<endl;
-    Nhanvien x;
-    ofstream file2;
-    file2.open("Nhanvien/Nhanvien.txt",ios::app);
-    if(!file2.is_open()) return;
-    cin>>x;
-    cout<<"Nhap mat khau cho nhan vien nay: ";cin>>pass;
-    out<<x.maNV<<" "<<pass<<endl;
-    file2<<x;
-    getInfo(p);
+    
+    // 2. Xóa mật khẩu (Password/staff.txt)
+    std::ifstream in_pass("Password/staff.txt");
+    std::ofstream out_pass("Password/temp.txt");
+    if (!in_pass.is_open() || !out_pass.is_open()) {
+        delete [] p;
+        return false;
+    }
+    
+    std::string username, pass;
+    while(in_pass >> username >> pass){
+        if(username != del_maNV) {
+            out_pass << username << " " << pass << std::endl;
+        }
+    }
+    in_pass.close();
+    out_pass.close();
+    
+    // 3. Xóa thông tin nhân viên (Nhanvien/Nhanvien.txt)
+    std::ofstream file2("Nhanvien/temp.txt");
+    if (!file2.is_open()) {
+        delete [] p;
+        return false;
+    }
+    
+    // Ghi lại danh sách nhân viên ngoại trừ người cần xóa
+    for(int j = 0; j < n; j++){
+        if(j != index_to_delete){
+            file2 << p[j];
+        }
+    }
     file2.close();
-    out.close();
-    TextColor1(10);cout<<"\n\t  Da them thanh cong\n";TextColor1(7);
-    cout<<"\nBan co muon tiep tuc them nhan vien?(y/n) : ";
-    char t;cin>>t;getchar();
-        if(t=='y'){
-            system("cls");
-            goto add;
-        }
-
-}
-void Delete(Nhanvien *p){
-    DEL:
-    cout<<endl;InLine1(45);TextColor1(11);
-    cout<<"Xoa Nhan Vien";TextColor1(7);
-    InLine1(45);cout<<endl;
-    string del;
-    cout<<"\nNhap ma cua nhan vien ban muon xoa: ";cin>>del;
-    if(check_maNV(p,del)==0){
-        TextColor1(12); cout<<"Ma nhan vien nay khong ton tai";TextColor1(7); 
-        cout<<"\n\nBan co muon nhap lai ma nhan vien ? (y/n) : ";
-        char t;cin>>t;
-            if(t=='y'){
-            system("cls");
-            goto DEL;
-            }
+    
+    // 4. Đổi tên file
+    // Xóa file cũ và rename file temp
+    
+    // Xử lý file Password
+    if (std::remove("Password/staff.txt") != 0) { 
+        // Xảy ra lỗi khi xóa
+        delete [] p;
+        return false; 
     }
-    else{
-    cout<<"\nThong tin nhan vien muon xoa :";
-    displaydel(p,del);
-    ifstream is("Nhanvien/Nhanvien.txt");
-    cout<<"Ban co chac muon xoa :";
-    TextColor1(14);cout<<"\n\n\t    -Notification-";TextColor1(7);
-    cout<<"\n  +--------------------------------+";
-	cout<<"\n  |      1.CO           2.KHONG    |";
-	cout<<"\n  +--------------------------------+";
-    char a;
-    cout<<"\n\nNhap lua chon : ";cin>>a;
-    switch (a){
-        case '1' :
-        {   
-            ofstream out;
-            ifstream in;
-            string username,pass;
-
-            in.open("Password/staff.txt");
-            out.open("Password/temp.txt");
-            ofstream file2;
-            file2.open("Nhanvien/temp.txt", ofstream::out);
-            while(in>>username>>pass){
-                if(username!=del) out<<username<<" "<<pass<<endl;
-            }
-            int n=getInfo(p);
-            int i;      
-            for ( i=0;i<n-1;i++){
-            if (del==p[i].maNV) {
-            break;
-                }
-            }
-            for(int j=0;j<n-1;j++){
-            if(j!=i){
-            file2<<p[j];
-                }
-            }
-            TextColor1(10);cout<<"\n\n\t  Da xoa thanh cong\n";TextColor1(7);
-            file2.close();
-            is.close();
-            in.close();
-            out.close();
-            remove("Password/staff.txt");
-            rename("Password/temp.txt","Password/staff.txt");
-            remove("Nhanvien/Nhanvien.txt");
-            rename("Nhanvien/temp.txt", "Nhanvien/Nhanvien.txt");
-            cout<<"\nBan co muon tiep tuc xoa nhan vien (y/n) :" ;
-            char d;cin>>d;
-            if(d=='y'){
-            system("cls");
-            goto DEL;
-            }
-            break;
-        }
-        case '2':
-        {
-        cout<<"\nBan co muon tiep tuc xoa nhan vien (y/n) :" ;char d;cin>>d;
-        if(d=='y'){
-            system("cls");
-            goto DEL;
-           }
-           break;
-            }
-        }
+    if (std::rename("Password/temp.txt", "Password/staff.txt") != 0) {
+        // Xảy ra lỗi khi đổi tên
+        delete [] p;
+        return false;
     }
+
+    // Xử lý file Nhanvien
+    if (std::remove("Nhanvien/Nhanvien.txt") != 0) {
+        delete [] p;
+        return false;
+    }
+    if (std::rename("Nhanvien/temp.txt", "Nhanvien/Nhanvien.txt") != 0) {
+        delete [] p;
+        return false;
+    }
+
+    delete [] p;
+    return true; // Xóa thành công
 }
-
-
-
-
