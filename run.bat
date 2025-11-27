@@ -1,25 +1,2 @@
-@echo off
-title Run C++ Project
-echo ============================
-echo   COMPILING PROJECT...
-echo ============================
-
-g++ -std=c++11 -Wall -O2 -o main.exe *.cpp
-
-if %errorlevel% neq 0 (
-    echo.
-    echo ❌ Compilation failed!
-    pause
-    exit /b
-)
-
-echo.
-echo ============================
-echo      RUNNING PROGRAM
-echo ============================
-echo.
-
-main.exe
-
-echo.
-pause
+g++ main.cpp -o bin/main.exe source/App.cpp source/Button.cpp source/Label.cpp source/TextBox.cpp source/MainMenuScreen.cpp source/LoginScreenNV.cpp source/LoginScreenAdmin.cpp source/PasswordNV.cpp source/PasswordQL.cpp source/NVDashBoard.cpp source/AdminDashBoard.cpp source/NVSP.cpp source/NVHD.cpp source/NV_NewPass.cpp source/Admin_NewPass.cpp source/ProductListView.cpp source/ProductListViewSmall.cpp source/Item.cpp source/Hoadon.cpp -I include -L lib -lSDL3 -lSDL3_ttf -lSDL3_image
+.\bin\main.exe

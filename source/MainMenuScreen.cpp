@@ -6,11 +6,11 @@
 #include <app/Color.h>
 
 MainMenuScreen::MainMenuScreen(App* app) :Screen(app) {
-    test_button = nullptr;
-    test_label = nullptr;
-    test_textbox = nullptr;
+    button_NV = nullptr;
+    button_admin = nullptr;
 
-}bool MainMenuScreen::Init() {
+}
+bool MainMenuScreen::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
     TTF_Font* font3 = app->getFont3();
@@ -21,12 +21,11 @@ MainMenuScreen::MainMenuScreen(App* app) :Screen(app) {
         return false;
     }
 
-    test_button = new Button(100,200,150,50,COLOR_BLUE,"button test",renderer,font1,COLOR_RED);
-    test_label = new Label("label test",COLOR_YELLOW,300,200,font2,renderer);
-    test_textbox = new TextBox(400,200,150,50,COLOR_GRAY_LIGHT,COLOR_MAGENTA,app,font3,"placehoder test",COLOR_GRAY_MEDIUM);
+    button_NV = new Button(300, 600, 470, 220,COLOR_UI_BLUE,"Đăng nhập với quyền nhân viên",renderer,font2,COLOR_WHITE);
+    button_admin = new Button(1962, 600, 470, 220, COLOR_UI_GREEN,"Đăng nhập với quyền admin",renderer,font2,COLOR_WHITE);
 
 
-    if (!test_button || !test_label|| !test_textbox) {
+    if (!button_NV || !button_admin ) {
         std::cerr << "Tạo UI thất bại!" << std::endl;
         return false;
     }
@@ -36,45 +35,33 @@ MainMenuScreen::MainMenuScreen(App* app) :Screen(app) {
 
 
 MainMenuScreen::~MainMenuScreen() {
-    delete test_button;
-    delete test_label;
-    delete test_textbox;
+    delete button_NV;
+    delete button_admin;
 }
 
 void MainMenuScreen::handleEvent(const SDL_Event& e) {
-    if(test_button){test_button->handleEvent(e);}
-    if(test_textbox){test_textbox->handleEvent(e);}
+    if(button_NV){button_NV->handleEvent(e);}
+    if(button_admin){button_admin->handleEvent(e);}
+
+    if (button_NV && button_NV->isClicked()) {
+        app->changeScreen("LoginNV");
+    }
+    if (button_admin && button_admin->isClicked()) {
+        app->changeScreen("LoginAdmin");
+    }
 }
 
 void MainMenuScreen::update() {
-    if(test_button) {
-        test_button->update();
-    }
-    if(test_textbox) {
-        test_textbox->update();
-    }
-    // thu nghiem
-    if (test_button && test_button->isClicked()) 
-    {
-        std::cout << "Nút Test đã được nhấn!" << std::endl;
-        
-        std::string username = test_textbox->getText();
-        std::cout << "Dữ liệu nhập vào là: " << username << std::endl;
-
-    }
+    if(button_NV){button_NV->update();}
+    if(button_admin){button_admin->update();}
 }
 
 void MainMenuScreen::render(SDL_Renderer* renderer) {
-    if (test_button) {
-        test_button->render(renderer);
+    if (button_NV) {
+        button_NV->render(renderer);
     }
-
-    if (test_label) {
-        test_label->render(renderer);
-    }
-
-    if (test_textbox) {
-        test_textbox->render(renderer);
+    if (button_admin) {
+        button_admin->render(renderer);
     }
 }
 

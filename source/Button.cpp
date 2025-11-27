@@ -1,12 +1,7 @@
 #include <app/Button.h>
 
 Button::Button(float x, float y, float w, float h, SDL_Color color,const string& text, SDL_Renderer* renderer, TTF_Font* f, SDL_Color tColor):rect{x,y,w,h},bgColor(color),label(text),hovered(false),pressed(false),wasClicked(false),font(f),textColor(tColor) ,renderer(renderer){
-    SDL_Surface* surf = TTF_RenderText_Solid(font, label.c_str(), label.size(), textColor); 
-    if (surf) { 
-        textTexture = SDL_CreateTextureFromSurface(renderer, surf); 
-        SDL_DestroySurface(surf); 
-    }
-
+    updateTextTexture();
 }
 
 Button::~Button() {
@@ -16,14 +11,34 @@ Button::~Button() {
     }
 }
 
+void Button::updateTextTexture() {
+    if (textTexture) {
+        SDL_DestroyTexture(textTexture);
+        textTexture = nullptr;
+    }
+    if (!font || !renderer || label.empty()) return;
+
+    int wrapLength = (int)(rect.w - 20); 
+    
+    if (wrapLength <= 0) wrapLength = 10; 
+    SDL_Surface* surf = TTF_RenderText_Blended_Wrapped(font, label.c_str(), 0, textColor, wrapLength);
+
+    if (surf) {
+        textTexture = SDL_CreateTextureFromSurface(renderer, surf);
+        SDL_DestroySurface(surf);
+    } else {
+        std::cerr << "Lỗi tạo text button: " << SDL_GetError() << endl;
+    }
+}
+
 void Button::render(SDL_Renderer* renderer) {
     SDL_Color renderColor = bgColor;
     if (pressed) {
         renderColor = { (Uint8)(bgColor.r / 2), (Uint8)(bgColor.g / 2), (Uint8)(bgColor.b / 2), bgColor.a };
     } else if (hovered) {
-        renderColor = { (Uint8)SDL_min(bgColor.r + 30, 255), 
-                        (Uint8)SDL_min(bgColor.g + 30, 255), 
-                        (Uint8)SDL_min(bgColor.b + 30, 255), 
+        renderColor = { (Uint8)SDL_max(bgColor.r - 50, 0), 
+                        (Uint8)SDL_max(bgColor.g - 50, 0), 
+                        (Uint8)SDL_max(bgColor.b - 50, 0), 
                         bgColor.a };
     }
     

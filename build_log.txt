@@ -1,0 +1,320 @@
+﻿C:\msys64\mingw64\bin\g++.exe : 
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccLadBgf.o: in function `App::init()':
+At line:1 char:1
++ C:\msys64\mingw64\bin\g++.exe -fdiagnostics-color=always -g main_dat. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:/msys64/mingw... `App::init()'::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:26:(.text+0xa2): undefined reference to `SDL_Init'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:27:(.text+0xc7): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:31:(.text+0xf3): undefined reference to `TTF_Init'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:32:(.text+0x118): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:33:(.text+0x13a): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:37:(.text+0x164): undefined reference to `SDL_CreateWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:39:(.text+0x19d): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:40:(.text+0x1bf): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:41:(.text+0x1c4): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:45:(.text+0x1e6): undefined reference to `SDL_CreateRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:47:(.text+0x21f): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:48:(.text+0x24f): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:49:(.text+0x254): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:50:(.text+0x259): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:54:(.text+0x27a): undefined reference to `TTF_OpenFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:56:(.text+0x2b3): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:57:(.text+0x2e3): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:58:(.text+0x2f6): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:59:(.text+0x2fb): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:60:(.text+0x300): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:64:(.text+0x321): undefined reference to `TTF_OpenFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:66:(.text+0x35e): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:67:(.text+0x38e): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:68:(.text+0x3a1): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:69:(.text+0x3b4): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:70:(.text+0x3b9): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:71:(.text+0x3be): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:75:(.text+0x3df): undefined reference to `TTF_OpenFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:77:(.text+0x41c): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:78:(.text+0x44c): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:79:(.text+0x45f): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:80:(.text+0x472): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:81:(.text+0x485): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:82:(.text+0x48a): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:83:(.text+0x48f): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:91:(.text+0x558): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:92:(.text+0x56b): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:93:(.text+0x57e): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:94:(.text+0x591): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:95:(.text+0x5a4): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:96:(.text+0x5a9): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:97:(.text+0x5ae): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:105:(.text+0x692): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:106:(.text+0x6a5): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:107:(.text+0x6b8): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:108:(.text+0x6cb): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:109:(.text+0x6de): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:110:(.text+0x6e3): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:111:(.text+0x6e8): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:120:(.text+0x7e7): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:121:(.text+0x7fa): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:122:(.text+0x80d): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:123:(.text+0x820): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:124:(.text+0x833): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:125:(.text+0x838): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:126:(.text+0x83d): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:136:(.text+0x957): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:137:(.text+0x96a): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:138:(.text+0x97d): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:139:(.text+0x990): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:140:(.text+0x9a3): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:141:(.text+0x9a8): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:142:(.text+0x9ad): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccLadBgf.o: in function `App::~App()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:161:(.text+0xde7): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:162:(.text+0xe04): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:163:(.text+0xe21): undefined reference to `TTF_CloseFont'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:165:(.text+0xe3e): undefined reference to `SDL_DestroyRenderer'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:166:(.text+0xe5b): undefined reference to `SDL_DestroyWindow'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:167:(.text+0xe60): undefined reference to `TTF_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:168:(.text+0xe65): undefined reference to `SDL_Quit'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccLadBgf.o: in function `App::run()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:178:(.text+0xf25): undefined reference to `SDL_PollEvent'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:190:(.text+0xf7e): undefined reference to 
+`SDL_SetRenderDrawColor'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:191:(.text+0xf8e): undefined reference to `SDL_RenderClear'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/App.cpp:196:(.text+0xfd3): undefined reference to `SDL_RenderPresent'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\cc6OXEKg.o: in function `Button::~Button()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:9:(.text+0x107): undefined reference to `SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\cc6OXEKg.o: in function `Button::updateTextTexture()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:16:(.text+0x156): undefined reference to 
+`SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:24:(.text+0x20b): undefined reference to 
+`TTF_RenderText_Blended_Wrapped'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:27:(.text+0x22a): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:28:(.text+0x23e): undefined reference to 
+`SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:30:(.text+0x25e): undefined reference to `SDL_GetError'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\cc6OXEKg.o: in function `Button::render(SDL_Renderer*)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:45:(.text+0x377): undefined reference to 
+`SDL_SetRenderDrawColor'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:46:(.text+0x387): undefined reference to 
+`SDL_RenderFillRect'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:50:(.text+0x3b3): undefined reference to 
+`SDL_GetTextureSize'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:57:(.text+0x447): undefined reference to `SDL_RenderTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\cc6OXEKg.o: in function `Button::update()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:65:(.text+0x472): undefined reference to `SDL_GetMouseState'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\cc6OXEKg.o: in function `Button::setLabel(std::__cxx11::basic_string<char, 
+std::char_traits<char>, std::allocator<char> > const&)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:112:(.text+0x626): undefined reference to 
+`SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:117:(.text+0x696): undefined reference to 
+`TTF_RenderText_Solid'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:119:(.text+0x6b5): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Button.cpp:120:(.text+0x6c9): undefined reference to 
+`SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccYtfwO0.o: in function `Label::Label(std::__cxx11::basic_string<char, 
+std::char_traits<char>, std::allocator<char> > const&, SDL_Color, float, float, TTF_Font*, SDL_Renderer*)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:4:(.text+0xbb): undefined reference to `TTF_RenderText_Solid'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:6:(.text+0xd6): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:9:(.text+0x106): undefined reference to `SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccYtfwO0.o: in function `Label::~Label()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:14:(.text+0x153): undefined reference to `SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccYtfwO0.o: in function `Label::setText(std::__cxx11::basic_string<char, 
+std::char_traits<char>, std::allocator<char> > const&)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:22:(.text+0x1b2): undefined reference to `SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:26:(.text+0x1fc): undefined reference to 
+`TTF_RenderText_Solid'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:28:(.text+0x21b): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:31:(.text+0x24b): undefined reference to `SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccYtfwO0.o: in function `Label::render(SDL_Renderer*) const':
+C:\Users\NguyenHoang\Desktop\PBL2/source/Label.cpp:38:(.text+0x2d6): undefined reference to `SDL_RenderTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::TextBox(float, float, float, float, 
+SDL_Color, SDL_Color, App*, TTF_Font*, std::__cxx11::basic_string<char, std::char_traits<char>, 
+std::allocator<char> > const&, SDL_Color)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:8:(.text+0x1bd): undefined reference to 
+`TTF_RenderText_Solid'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:10:(.text+0x1df): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:11:(.text+0x1f6): undefined reference to 
+`SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::~TextBox()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:18:(.text+0x277): undefined reference to 
+`SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:22:(.text+0x2a6): undefined reference to 
+`SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::updateTexture()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:29:(.text+0x308): undefined reference to 
+`SDL_DestroyTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:36:(.text+0x3b8): undefined reference to 
+`TTF_RenderText_Solid'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:38:(.text+0x3da): undefined reference to 
+`SDL_CreateTextureFromSurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:41:(.text+0x40a): undefined reference to 
+`SDL_DestroySurface'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::update()':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:48:(.text+0x42f): undefined reference to `SDL_GetTicks'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::handleEvent(SDL_Event const&)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:76:(.text+0x5fa): undefined reference to 
+`SDL_StartTextInput'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:79:(.text+0x619): undefined reference to 
+`SDL_StopTextInput'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:101:(.text+0x74b): undefined reference to `SDL_GetTicks'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:107:(.text+0x7a2): undefined reference to `SDL_GetTicks'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NGUYEN~1\AppData\Local\Temp\ccBIKcsE.o: in function `TextBox::render(SDL_Renderer*)':
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:114:(.text+0x815): undefined reference to 
+`SDL_SetRenderDrawColor'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:115:(.text+0x829): undefined reference to 
+`SDL_RenderFillRect'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:123:(.text+0x8b1): undefined reference to `TTF_CreateText'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:124:(.text+0x8cc): undefined reference to `TTF_GetTextSize'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:126:(.text+0x8d8): undefined reference to `TTF_DestroyText'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:154:(.text+0x9fe): undefined reference to 
+`SDL_SetRenderClipRect'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:157:(.text+0xa3c): undefined reference to 
+`TTF_GetFontHeight'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:163:(.text+0xaad): undefined reference to 
+`SDL_GetTextureSize'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:165:(.text+0xb28): undefined reference to 
+`SDL_RenderTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:176:(.text+0xbb0): undefined reference to 
+`SDL_RenderTexture'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:182:(.text+0xbe0): undefined reference to 
+`TTF_GetFontHeight'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:190:(.text+0xcb3): undefined reference to 
+`SDL_SetRenderDrawColor'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:191:(.text+0xcc3): undefined reference to 
+`SDL_RenderFillRect'
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: 
+C:\Users\NguyenHoang\Desktop\PBL2/source/TextBox.cpp:195:(.text+0xcd4): undefined reference to 
+`SDL_SetRenderClipRect'
+collect2.exe: error: ld returned 1 exit status

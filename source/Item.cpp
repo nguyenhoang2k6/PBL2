@@ -108,7 +108,7 @@ int Item::getprice() const { // Thêm const cho getter
  * @return Số lượng items đọc được, -1 nếu lỗi
  */
 int getInfo(Item* p) {
-    ifstream myFile("Item/Item.txt");
+    ifstream myFile("data/Item/Item.txt");
     if (!myFile.is_open()) {
         return -1; // Lỗi mở file
     }
@@ -142,7 +142,7 @@ int getInfo(Item* p) {
  * @return true nếu thành công, false nếu thất bại
  */
 bool loadAllItems(vector<Item> &items) {
-    ifstream myFile("Item/Item.txt");
+    ifstream myFile("data/Item/Item.txt");
     if (!myFile.is_open()) {
         return false; // Lỗi mở file
     }
@@ -224,7 +224,7 @@ bool addItem(Item* p) {
     Item x;
     cin >> x; // Nhập thông tin item mới
     
-    ofstream file2("Item/Item.txt", ios::app);
+    ofstream file2("data/Item/Item.txt", ios::app);
     if (!file2.is_open()) {
         return false; // Lỗi mở file
     }
@@ -270,14 +270,14 @@ bool deleteItem(Item *p) {
     }
     
     // Mở file gốc để đọc
-    ifstream is("Item/Item.txt");
+    ifstream is("data/Item/Item.txt");
     if (!is.is_open()) {
         cout << "Khong the mo file!" << endl;
         return false;
     }
     
     // Tạo file tạm để ghi
-    ofstream file2("temp.txt");
+    ofstream file2("data/temp.txt");
     if (!file2.is_open()) {
         is.close();
         cout << "Khong the tao file tam!" << endl;
@@ -301,12 +301,12 @@ bool deleteItem(Item *p) {
     
     if (found) {
         // Thay thế file cũ bằng file tạm
-        remove("Item/Item.txt");
-        rename("temp.txt", "Item/Item.txt");
+        remove("data/Item/Item.txt");
+        rename("data/temp.txt", "data/Item/Item.txt");
         cout << "Xoa mat hang thanh cong!" << endl;
         return true;
     } else {
-        remove("temp.txt"); // Xóa file tạm nếu không tìm thấy
+        remove("data/temp.txt"); // Xóa file tạm nếu không tìm thấy
         cout << "Khong tim thay mat hang de xoa!" << endl;
         return false;
     }
@@ -327,7 +327,7 @@ bool updateItem(Item *p, string ma, const Item &newItem) {
     }
     
     // Mở file gốc để đọc
-    ifstream is("Item/Item.txt");
+    ifstream is("data/Item/Item.txt");
     if (!is.is_open()) {
         cout << "Khong the mo file!" << endl;
         return false;
@@ -359,12 +359,12 @@ bool updateItem(Item *p, string ma, const Item &newItem) {
     
     if (updated) {
         // Thay thế file cũ bằng file tạm
-        remove("Item/Item.txt");
-        rename("temp.txt", "Item/Item.txt");
+        remove("data/Item/Item.txt");
+        rename("data/temp.txt", "data/Item/Item.txt");
         cout << "Cap nhat mat hang thanh cong!" << endl;
         return true;
     } else {
-        remove("temp.txt"); // Xóa file tạm nếu không cập nhật
+        remove("data/temp.txt"); // Xóa file tạm nếu không cập nhật
         cout << "Khong the cap nhat mat hang!" << endl;
         return false;
     }

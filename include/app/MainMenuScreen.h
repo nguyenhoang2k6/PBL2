@@ -10,9 +10,8 @@ class TextBox;
 class MainMenuScreen : public Screen
 {
 private:
-    Button* test_button;
-    Label* test_label;
-    TextBox* test_textbox;
+    Button* button_NV;
+    Button* button_admin;
 
 public:
     MainMenuScreen(App* app);

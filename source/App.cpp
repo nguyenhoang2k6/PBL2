@@ -1,22 +1,34 @@
-#include <app/App.h>
-#include <app/MainMenuScreen.h>
 #ifdef _WIN32
 #include <windows.h>
+#include <iostream>
 #endif
+#include <app/App.h>
+#include <app/MainMenuScreen.h>
+#include <app/LoginScreenNV.h>
+#include <app/LoginScreenAdmin.h>
+#include <app/NVDashBoard.h>
+#include <app/AdminDashBoard.h>
+#include <app/NVSP.h>
+#include <app/NVHD.h>
+#include <app/NV_NewPass.h>
+#include <app/Admin_NewPass.h>
+#include <app/Color.h>
 
 App::App() : 
     running(false),
     window(nullptr), 
-    renderer(nullptr), 
+    renderer(nullptr),
+    currentScreen(nullptr),
     font1(nullptr),
     font2(nullptr),
-    font3(nullptr)
+    font3(nullptr),
+    current_username(""),
+    current_pasword("")
 {
 }
 
 bool App::init() {
 #ifdef _WIN32
-    // Set console to UTF-8 so Vietnamese (UTF-8) output isn't garbled
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
@@ -31,7 +43,7 @@ bool App::init() {
         return false;
     }
 
-    window = SDL_CreateWindow("Quan Ly Quan Ca Phe", 800, 600, 0);
+    window = SDL_CreateWindow("Quản Lí Quán Cà Phê", 2732, 1536, SDL_WINDOW_RESIZABLE);
     if (!window) {
         std::cerr << "Không tạo được window: " << SDL_GetError() << std::endl;
         TTF_Quit();
@@ -48,7 +60,7 @@ bool App::init() {
         return false;
     }
     
-    font1 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 30);
+    font1 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 45);
     if (!font1) {
         std::cerr << "Không mở được font1: " << SDL_GetError() << std::endl;
         SDL_DestroyRenderer(renderer);
@@ -58,7 +70,7 @@ bool App::init() {
         return false;
     }
 
-    font2 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 45);
+    font2 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 60);
     if (!font2) {
         std::cerr << "Không mở được font2: " << SDL_GetError() << std::endl;
         TTF_CloseFont(font1); 
@@ -69,7 +81,7 @@ bool App::init() {
         return false;
     }
 
-    font3 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 60);
+    font3 = TTF_OpenFont("fonts/Inter_28pt-Regular.ttf", 100);
     if (!font3) {
         std::cerr << "Không mở được font3: " << SDL_GetError() << std::endl;
         TTF_CloseFont(font1);
@@ -81,17 +93,180 @@ bool App::init() {
         return false;
 
     }
-    this->currentScreen = new MainMenuScreen(this);
-
-    if (this->currentScreen == nullptr || currentScreen->Init()==false) {
-        std::cerr << "Không thể tạo màn hình MainMenuScreen!" << std::endl;
+    Screen* mainMenu = new MainMenuScreen(this);
+    if (!mainMenu->Init()) {
+        std::cerr << "Không khởi tạo được MainMenuScreen" << std::endl;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
         return false;
     }
+    Screen* loginNV = new LoginScreenNV(this);
+    if (!loginNV->Init()) {
+        std::cerr << "Không khởi tạo được LoginScreenNV" << std::endl;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* loginAdmin = new LoginScreenAdmin(this);
+    if (!loginAdmin->Init()) {
+        std::cerr << "Không khởi tạo được LoginScreenAdmin" << std::endl;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* nvDashBoard = new NVDashBoard(this);
+    if (!nvDashBoard->Init()) {
+        std::cerr << "Không khởi tạo được NVDashBoard" << std::endl;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* adminDashBoard = new AdminDashBoard(this);
+    if (!adminDashBoard->Init()) {
+        std::cerr << "Không khởi tạo được AdminDashBoard" << std::endl;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* nvsp = new NVSP(this);
+    if (!nvsp->Init()) {
+        std::cerr << "Không khởi tạo được NVSP" << std::endl;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* nvhd = new NVHD(this);
+    if (!nvhd->Init()) {
+        std::cerr << "Không khởi tạo được NVHD" << std::endl;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* nvNewPass = new NV_NewPass(this);
+    if (!nvNewPass->Init()) {
+        std::cerr << "Không khởi tạo được NV_NewPass" << std::endl;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* adminNewPass = new Admin_NewPass(this);
+    if (!adminNewPass->Init()) {
+        std::cerr << "Không khởi tạo được Admin_NewPass" << std::endl;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    ScreenCache["Admin_NewPass"] = adminNewPass;
+    ScreenCache["NV_NewPass"] = nvNewPass;
+    ScreenCache["NVHD"] = nvhd;
+    ScreenCache["NVSP"] = nvsp;
+    ScreenCache["AdminDashBoard"] = adminDashBoard;
+    ScreenCache["NVDashBoard"] = nvDashBoard;
+    ScreenCache["LoginAdmin"] = loginAdmin;
+    ScreenCache["LoginNV"] = loginNV;
+    ScreenCache["MainMenu"] = mainMenu;
+    // còn các màn hình khác sẽ được khởi tạo tương tự ở đây và thêm vào ScreenCache
+    currentScreen = ScreenCache["MainMenu"];
     this->running = true;
     return true;
 }
 
 App::~App() {
+    for (auto& pair : ScreenCache) {
+        delete pair.second;
+    }
+    ScreenCache.clear();
+
     if (font1) TTF_CloseFont(font1);
     if (font2) TTF_CloseFont(font2);
     if (font3) TTF_CloseFont(font3);
@@ -121,7 +296,7 @@ void App::run() {
         if (currentScreen) {
             currentScreen->update();
         }
-        SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+        SDL_SetRenderDrawColor(renderer,235, 235, 210, 255);
         SDL_RenderClear(renderer);
 
         if (currentScreen) {
@@ -131,16 +306,16 @@ void App::run() {
     }
 }
 
-void App::changeScreen(Screen* newScreen) {
-    if (currentScreen != nullptr) {
-        delete currentScreen;
-        currentScreen = nullptr;
+void App::changeScreen(const std::string& screenName) {
+    if(currentScreen) {
+        currentScreen->onExit();
     }
-
-    currentScreen = newScreen;
-
-    if (currentScreen == nullptr) {
-        std::cerr << "Lỗi: Màn hình mới là nullptr!" << std::endl;
-        quit();
+    if(ScreenCache.find(screenName) != ScreenCache.end()) {
+        currentScreen = ScreenCache[screenName];
+    } else {
+        std::cerr << "Màn hình " << screenName << " không tồn tại trong bộ nhớ đệm." << std::endl;
+    }
+    if(currentScreen) {
+        currentScreen->onEnter();
     }
 }

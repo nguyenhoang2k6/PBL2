@@ -48,7 +48,7 @@ void passInput(string &pass){
 bool Manager(const std::string& inputUsername, const std::string& inputPass){
     string username, pass;
     ifstream in;
-    in.open("Password/admin.txt");
+    in.open("data/Password/admin.txt");
     
     // Đảm bảo file tồn tại và đọc dữ liệu. Nếu không, coi như lỗi hoặc dùng default.
     if (!in.is_open()) {
@@ -77,7 +77,7 @@ bool Manager(const std::string& inputUsername, const std::string& inputPass){
 int resetPass(const std::string& currentPass, const std::string& newPass, const std::string& retypePass){
     string username, pass_from_file;
     ifstream in;
-    in.open("Password/admin.txt");
+    in.open("data/Password/admin.txt");
     
     // 1. Đọc mật khẩu hiện tại từ file
     if (!in.is_open()) {
@@ -98,7 +98,7 @@ int resetPass(const std::string& currentPass, const std::string& newPass, const 
 
     // 4. Thực hiện ghi mật khẩu mới vào file
     ofstream out;
-    out.open("Password/admin.txt", ios::trunc);
+    out.open("data/Password/admin.txt", ios::trunc);
     
     if (out.is_open()){
         out << username << " " << newPass;

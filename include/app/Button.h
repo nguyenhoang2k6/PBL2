@@ -19,6 +19,7 @@ private:
     SDL_Color textColor;
     SDL_Renderer* renderer;
 
+    void updateTextTexture();
 public:
     Button(float x, float y, float w, float h, SDL_Color color,const string& text, SDL_Renderer* renderer, TTF_Font* f, SDL_Color tColor);
     ~Button();
@@ -32,6 +33,10 @@ public:
 
     void setLabel(const string& text);
     void setColor(SDL_Color color);
+    void setPosition(float x, float y) {
+        rect.x = x;
+        rect.y = y;
+    }
     string getLabel() const;
 };
 

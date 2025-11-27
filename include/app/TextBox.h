@@ -31,6 +31,7 @@ private:
 
     SDL_Renderer* renderer;
     bool needsTextureUpdate;    
+    float scrollOffset;
 
     void updateTexture();
 public:
@@ -41,6 +42,11 @@ public:
     void render(SDL_Renderer* renderer);
 
     string getText() const {return text;}
+    void setText(const string& t) {
+        text = t;
+        caretPos = (int)text.length();
+        needsTextureUpdate = true;
+    }
     void setFocus(bool f) {focused = f;}
     bool isFocused() {return focused;}
 };

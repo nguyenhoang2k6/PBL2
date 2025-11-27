@@ -15,7 +15,7 @@ void TextColor7(int x){
 // Hàm này chỉ có trách nhiệm xác thực, KHÔNG hiển thị giao diện hay xử lý lỗi
 bool Staff(const string& _Username, const string& _Pass){
     ifstream in;
-    in.open("Password/staff.txt");
+    in.open("data/Password/staff.txt");
     
     if (!in.is_open()) {
         return false; 
@@ -31,6 +31,7 @@ bool Staff(const string& _Username, const string& _Pass){
     
     in.close();
     return false; // Không tìm thấy tài khoản
+    return false; // Không tìm thấy tài khoản
 }
 
 ResetStatusNV resetPassNV(
@@ -44,7 +45,7 @@ ResetStatusNV resetPassNV(
     
     // 1. Tìm kiếm và lấy mật khẩu hiện tại
     ifstream on;
-    on.open("Password/staff.txt");
+    on.open("data/Password/staff.txt");
     if (!on.is_open()) return FILE_IO_ERROR_NV;
 
     while(on >> _Username >> pass_from_file){
@@ -71,11 +72,11 @@ ResetStatusNV resetPassNV(
 
     // 4. Thực hiện ghi mật khẩu mới vào file (dùng temp file)
     ofstream out;
-    out.open("Password/temp.txt", ios::out);
+    out.open("data/Password/temp.txt", ios::out);
     if (!out.is_open()) return FILE_IO_ERROR_NV;
 
     ifstream in;
-    in.open("Password/staff.txt");
+    in.open("data/Password/staff.txt");
     if (!in.is_open()) { 
         out.close(); 
         return FILE_IO_ERROR_NV; 
@@ -95,11 +96,11 @@ ResetStatusNV resetPassNV(
     out.close();
     
     // 5. Thay thế file
-    if (remove("Password/staff.txt") != 0) {
+    if (remove("data/Password/staff.txt") != 0) {
         // Xử lý lỗi xóa file gốc nếu cần
         return FILE_IO_ERROR_NV; 
     }
-    if (rename("Password/temp.txt", "Password/staff.txt") != 0) {
+    if (rename("data/Password/temp.txt", "data/Password/staff.txt") != 0) {
         // Xử lý lỗi đổi tên file nếu cần
         return FILE_IO_ERROR_NV;
     }

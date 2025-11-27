@@ -19,6 +19,10 @@ public:
     Label(const string& text, SDL_Color textColor,float x,float y,TTF_Font* font, SDL_Renderer* renderer);
     ~Label();
     void setText(const string& newText);
+    void setPosition(float x, float y) {
+        this->x = x;
+        this->y = y;
+    }
     void render(SDL_Renderer* renderer) const;
 };
 
