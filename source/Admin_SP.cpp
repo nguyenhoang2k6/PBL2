@@ -1,4 +1,4 @@
-#include <app/NVSP.h>
+#include <app/Admin_SP.h>
 #include <app/App.h>        
 #include <app/Button.h>
 #include <app/Label.h>
@@ -6,11 +6,12 @@
 #include <app/Color.h>
 #include <SDL3_image/SDL_image.h>
 
-NVSP::NVSP(App* app) :Screen(app) {
+Admin_SP::Admin_SP(App* app) :Screen(app) {
     productListView = nullptr;
     button_back = nullptr;
+    button_add = nullptr;
 }
-bool NVSP::Init() {
+bool Admin_SP::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
     TTF_Font* font3 = app->getFont3();
@@ -25,10 +26,11 @@ bool NVSP::Init() {
     // Load items from data folder
     productListView->loadFromFile(renderer, "data/Item/Item.txt");
     button_back = new Button(2532.0f, 0.0f, 200.0f, 150.0f,COLOR_UI_RED, "<-", renderer, font2, COLOR_WHITE);
+    button_add = new Button(2332.0f, 0.0f, 200.0f, 150.0f,COLOR_UI_GREEN, "+", renderer, font2, COLOR_WHITE);
     
 
 
-    if (!productListView || !button_back) {
+    if (!productListView || !button_back || !button_add) {
         std::cerr << "Tạo UI thất bại!" << std::endl;
         return false;
     }
@@ -37,15 +39,16 @@ bool NVSP::Init() {
 
 
 
-NVSP::~NVSP() {
+Admin_SP::~Admin_SP() {
     if (productListView) {
         delete productListView;
         productListView = nullptr;
     }
     delete button_back;
+    delete button_add;
 }
 
-void NVSP::handleEvent(const SDL_Event& e) {
+void Admin_SP::handleEvent(const SDL_Event& e) {
     // Forward events to the product list view (scroll, clicks)
     if (productListView) {
         if (e.type == SDL_EVENT_MOUSE_WHEEL) {
@@ -71,31 +74,40 @@ void NVSP::handleEvent(const SDL_Event& e) {
     if (button_back) {
         button_back->handleEvent(e);
     }
+    if (button_add) {
+        button_add->handleEvent(e);
+    }
     if (button_back->isClicked()) {
-        app->changeScreen("NVDashBoard");
+        app->changeScreen("AdminDashBoard");
     }
 
 }
 
-void NVSP::update() {
+void Admin_SP::update() {
     if(button_back) {
         button_back->update();
     }
+    if(button_add) {
+        button_add->update();
+    }
 }
 
-void NVSP::render(SDL_Renderer* renderer) {
+void Admin_SP::render(SDL_Renderer* renderer) {
     if(productListView) {
         productListView->render(renderer);
     }
     if (button_back) {
         button_back->render(renderer);
     }
+    if (button_add) {
+        button_add->render(renderer);
+    }
 }
 
-void NVSP::onEnter() {
+void Admin_SP::onEnter() {
 
 }
 
-void NVSP::onExit() {
+void Admin_SP::onExit() {
 
 }

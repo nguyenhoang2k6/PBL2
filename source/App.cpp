@@ -12,6 +12,9 @@
 #include <app/NVHD.h>
 #include <app/NV_NewPass.h>
 #include <app/Admin_NewPass.h>
+#include <app/Admin_NV.h>
+#include <app/Admin_ThongKe.h>
+#include <app/Admin_SP.h>
 #include <app/Color.h>
 
 App::App() : 
@@ -246,6 +249,78 @@ bool App::init() {
         SDL_Quit();
         return false;
     }
+    Screen* adminNV = new Admin_NV(this);
+    if (!adminNV->Init()) {
+        std::cerr << "Không khởi tạo được Admin_NV" << std::endl;
+        delete adminNV;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* adminThongKe = new Admin_ThongKe(this);
+    if (!adminThongKe->Init()) {
+        std::cerr << "Không khởi tạo được Admin_ThongKe" << std::endl;
+        delete adminThongKe;
+        delete adminNV;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    Screen* adminSP = new Admin_SP(this);
+    if (!adminSP->Init()) {
+        std::cerr << "Không khởi tạo được Admin_SP" << std::endl;
+        delete adminSP;
+        delete adminThongKe;
+        delete adminNV;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    ScreenCache["Admin_SP"] = adminSP;
+    ScreenCache["Admin_ThongKe"] = adminThongKe;
+    ScreenCache["Admin_NV"] = adminNV;
     ScreenCache["Admin_NewPass"] = adminNewPass;
     ScreenCache["NV_NewPass"] = nvNewPass;
     ScreenCache["NVHD"] = nvhd;
@@ -293,9 +368,11 @@ void App::run() {
                 }
             }
         }
+        if(!running) break;
         if (currentScreen) {
             currentScreen->update();
         }
+        if(!running) break;
         SDL_SetRenderDrawColor(renderer,235, 235, 210, 255);
         SDL_RenderClear(renderer);
 

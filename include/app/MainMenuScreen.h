@@ -12,6 +12,7 @@ class MainMenuScreen : public Screen
 private:
     Button* button_NV;
     Button* button_admin;
+    Button* button_exit;
 
 public:
     MainMenuScreen(App* app);

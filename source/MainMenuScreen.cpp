@@ -8,6 +8,7 @@
 MainMenuScreen::MainMenuScreen(App* app) :Screen(app) {
     button_NV = nullptr;
     button_admin = nullptr;
+    button_exit = nullptr;
 
 }
 bool MainMenuScreen::Init() {
@@ -23,9 +24,10 @@ bool MainMenuScreen::Init() {
 
     button_NV = new Button(300, 600, 470, 220,COLOR_UI_BLUE,"Đăng nhập với quyền nhân viên",renderer,font2,COLOR_WHITE);
     button_admin = new Button(1962, 600, 470, 220, COLOR_UI_GREEN,"Đăng nhập với quyền admin",renderer,font2,COLOR_WHITE);
+    button_exit = new Button(2432, 1436, 300, 100, COLOR_UI_RED, "Thoát", renderer, font2, COLOR_WHITE);
 
 
-    if (!button_NV || !button_admin ) {
+    if (!button_NV || !button_admin || !button_exit) {
         std::cerr << "Tạo UI thất bại!" << std::endl;
         return false;
     }
@@ -37,11 +39,13 @@ bool MainMenuScreen::Init() {
 MainMenuScreen::~MainMenuScreen() {
     delete button_NV;
     delete button_admin;
+    delete button_exit;
 }
 
 void MainMenuScreen::handleEvent(const SDL_Event& e) {
     if(button_NV){button_NV->handleEvent(e);}
     if(button_admin){button_admin->handleEvent(e);}
+    if (button_exit) { button_exit->handleEvent(e); }
 
     if (button_NV && button_NV->isClicked()) {
         app->changeScreen("LoginNV");
@@ -49,11 +53,15 @@ void MainMenuScreen::handleEvent(const SDL_Event& e) {
     if (button_admin && button_admin->isClicked()) {
         app->changeScreen("LoginAdmin");
     }
+    if (button_exit && button_exit->isClicked()) {
+        app->quit();
+    }
 }
 
 void MainMenuScreen::update() {
     if(button_NV){button_NV->update();}
     if(button_admin){button_admin->update();}
+    if (button_exit) { button_exit->update(); }
 }
 
 void MainMenuScreen::render(SDL_Renderer* renderer) {
@@ -62,6 +70,9 @@ void MainMenuScreen::render(SDL_Renderer* renderer) {
     }
     if (button_admin) {
         button_admin->render(renderer);
+    }
+    if (button_exit) {
+        button_exit->render(renderer);
     }
 }
 

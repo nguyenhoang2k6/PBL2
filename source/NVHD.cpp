@@ -28,12 +28,12 @@ bool NVHD::Init() {
         return false;
     }
     hoadon = new Hoadon();
-    label_title = new Label("Thêm Hóa Đơn", COLOR_BLACK, 550.0f, 50.0f, font3, renderer);
-    label_tongtien = new Label("Tổng Tiền: 0 VND", COLOR_BLACK, 400.0f, 150.0f, font2, renderer);
-    textbox_maHD = new TextBox(400.0f, 250.0f, 300.0f, 50.0f, COLOR_WHITE, COLOR_BLACK,app, font2, "Mã Hóa Đơn", COLOR_GRAY_SILVER);
-    textbox_ngayHD = new TextBox(400.0f, 350.0f, 300.0f, 50.0f, COLOR_WHITE, COLOR_BLACK,app, font2, "Mã Hóa Đơn", COLOR_GRAY_SILVER);
-    textbox_maNV = new TextBox(400.0f, 250.0f, 300.0f, 50.0f, COLOR_WHITE, COLOR_BLACK,app, font2, "Mã Hóa Đơn", COLOR_GRAY_SILVER);
-    button_submit = new Button(2532.0f, 0.0f, 200.0f, 100.0f, COLOR_UI_GREEN, "Lưu", renderer, font2, COLOR_WHITE);
+    label_title = new Label("Thêm Hóa Đơn", COLOR_WARNING, 550.0f, 50.0f, font3, renderer);
+    label_tongtien = new Label("Tổng Tiền: 0 VND", COLOR_GREEN, 600.0f, 150.0f, font2, renderer);
+    textbox_maHD = new TextBox(100.0f, 250.0f, 350.0f, 75.0f, COLOR_WHITE, COLOR_BLACK,app, font1, "Mã Hóa Đơn", COLOR_GRAY_SILVER);
+    textbox_ngayHD = new TextBox(500.0f, 250.0f, 350.0f, 75.0f, COLOR_WHITE, COLOR_BLACK,app, font1, "Thời gian", COLOR_GRAY_SILVER);
+    textbox_maNV = new TextBox(900.0f, 250.0f, 350.0f, 75.0f, COLOR_WHITE, COLOR_BLACK,app, font1, "Mã Nhân viên", COLOR_GRAY_SILVER);
+    button_submit = new Button(2532.0f, 0.0f, 200.0f, 100.0f, COLOR_UI_GREEN, "Lưu", renderer, font1, COLOR_WHITE);
     button_back = new Button(0.0f, 0.0f, 200.0f, 100.0f, COLOR_RED, "<-", renderer, font2, COLOR_WHITE);
 
 

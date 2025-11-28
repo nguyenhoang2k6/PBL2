@@ -1,69 +1,44 @@
-#ifndef NHANVIEN_H
-#define NHANVIEN_H
+#pragma once
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
 
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<iomanip>
-#include <cstdio> // Cần thiết cho hàm remove/rename trong Delete()
-#include <stdlib.h> // Cần thiết cho std::exit
-
-// Lớp Nhanvien
-class Nhanvien{
+class NhanVien {
 private:
-    // Thêm std:: cho kiểu dữ liệu để tăng tính rõ ràng
+    // Dữ liệu thành viên
     std::string maNV;
-    std::string chucvu;
-    std::string name;
-    int age;
-    std::string address;
+    std::string ten;
+    std::string chucVu;
+    int tuoi;
+    std::string diaChi;
     std::string sdt;
 
 public:
-    // Constructor
-    Nhanvien(){
-        this->age = 0;
-    }
-    
-    // ==========================================================
-    // KHAI BÁO FRIEND CHO CÁC HÀM LOGIC (ĐƯỢC ĐỊNH NGHĨA Ở FILE .CPP)
-    // ==========================================================
-    
-    // Overload Operator (Output)
-    friend std::ostream& operator <<(std::ostream & ,const Nhanvien &);
-    // friend std::istream& operator >>(std::istream &,Nhanvien &); // Bỏ vì không có định nghĩa trong .cpp
-    
-    // Utility functions (getInfo, check_exist, check_maNV)
-    friend int getInfo(Nhanvien*);
-    friend bool check_exist(const Nhanvien &x);
-    friend int check_maNV(Nhanvien *p, std::string ma);
+    // Constructor mặc định & đầy đủ
+    NhanVien();
+    NhanVien(std::string ma, std::string t, std::string cv, int age, std::string dc, std::string phone);
 
-    // CRUD functions (Add, Delete) - Đã sửa chữ ký để khớp với .cpp
-    friend bool Add(const Nhanvien& x, const std::string& pass);
-    friend bool Delete(const std::string& del_maNV);
+    // Getters (Để lấy dữ liệu ra hiển thị)
+    std::string getMaNV() const { return maNV; }
+    std::string getTen() const { return ten; }
+    std::string getChucVu() const { return chucVu; }
+    int getTuoi() const { return tuoi; }
+    std::string getDiaChi() const { return diaChi; }
+    std::string getSDT() const { return sdt; }
 
-
-    // ==========================================================
-    // KHAI BÁO MEMBER FUNCTIONS (ĐƯỢC ĐỊNH NGHĨA Ở FILE .CPP)
-    // ==========================================================
+    // --- CÁC HÀM QUẢN LÝ DỮ LIỆU (STATIC) ---
+    // Gọi trực tiếp: NhanVien::getAll(), NhanVien::add(...)
     
-    // Getters and Setters
-    void setmaNV(std::string maNV);
-    std::string getmaNV();
-    void setChucvu(std::string chucvu);
-    std::string getChucvu();
-    void setName(std::string name);
-    std::string getName();
-    void setAge(int age);
-    int getAge();
-    void setAddress(std::string address);
-    std::string getAddress();
-    void setSDT(std::string sdt);
-    std::string getSDT();
+    // 1. Lấy toàn bộ danh sách nhân viên từ file
+    static std::vector<NhanVien> getAll();
 
-    // Hàm hiển thị
-    void display();
+    // 2. Thêm nhân viên mới (kèm mật khẩu) vào file
+    static bool add(const NhanVien& nv, const std::string& password);
+
+    // 3. Xóa nhân viên theo mã khỏi file
+    static bool remove(const std::string& maNV);
+
+    // 4. Kiểm tra mã nhân viên đã tồn tại chưa
+    static bool exists(const std::string& maNV);
 };
-
-#endif // NHANVIEN_H

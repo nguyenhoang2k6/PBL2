@@ -2,19 +2,22 @@
 #include <app/Screen.h>
 #include <iostream>
 #include <SDL3/SDL.h>
+#include <app/EmployeeTable.h>
 
 class Button;
 class Label;
 class TextBox;
 
-class AdSP : public Screen
+class Admin_NV : public Screen
 {
 private:
-    Button* button_test;
+    EmployeeTable* m_table;
+    Button* button_add;
+    Button* button_back;
 
 public:
-    AdSP(App* app);
-    ~AdSP();
+    Admin_NV(App* app);
+    ~Admin_NV();
     bool Init() override;
 
     void handleEvent(const SDL_Event& e) override;

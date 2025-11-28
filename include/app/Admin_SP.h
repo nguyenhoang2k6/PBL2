@@ -8,14 +8,15 @@ class Button;
 class Label;
 class TextBox;
 
-class NVSP : public Screen
+class Admin_SP : public Screen
 {
 private:
     ProductListView* productListView;
     Button* button_back;
+    Button* button_add;
 public:
-    NVSP(App* app);
-    ~NVSP();
+    Admin_SP(App* app);
+    ~Admin_SP();
     bool Init() override;
 
     void handleEvent(const SDL_Event& e) override;

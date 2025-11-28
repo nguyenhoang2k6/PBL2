@@ -13,7 +13,6 @@ private:
     Label* label_title;
     Button* button_nv;
     Button* button_item;
-    Button* button_hoadon;
     Button* button_thongke;
     Button* button_doimk;
     Button* button_back;
