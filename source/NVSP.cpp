@@ -22,6 +22,8 @@ bool NVSP::Init() {
     }
 
     productListView = new ProductListView(app);
+    // NV screen: không cho hiện nút xóa
+    productListView->setShowDelete(false);
     // Load items from data folder
     productListView->loadFromFile(renderer, "data/Item/Item.txt");
     button_back = new Button(2532.0f, 0.0f, 200.0f, 150.0f,COLOR_UI_RED, "<-", renderer, font2, COLOR_WHITE);
@@ -48,25 +50,12 @@ NVSP::~NVSP() {
 void NVSP::handleEvent(const SDL_Event& e) {
     // Forward events to the product list view (scroll, clicks)
     if (productListView) {
+        // give rows a chance to update hover state and process events
+        productListView->handleEvent(e);
         if (e.type == SDL_EVENT_MOUSE_WHEEL) {
             productListView->handleScroll((float)e.wheel.y);
         }
-        if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-            if (e.button.button == SDL_BUTTON_LEFT) {
-                float mx = (float)e.button.x;
-                float my = (float)e.button.y;
-                std::string code = productListView->checkClick(mx, my);
-                if (!code.empty()) {
-                    std::cerr << "Clicked delete for item: " << code << std::endl;
-                    // Attempt to remove from data file and reload
-                    SDL_Renderer* rdr = app->getRenderer();
-                    bool ok = productListView->removeItem(code, rdr);
-                    if (!ok) {
-                        std::cerr << "Failed to remove item: " << code << std::endl;
-                    }
-                }
-            }
-        }
+        // NV không có quyền xóa sản phẩm: bỏ xử lý click nút xóa
     }
     if (button_back) {
         button_back->handleEvent(e);
@@ -81,6 +70,7 @@ void NVSP::update() {
     if(button_back) {
         button_back->update();
     }
+    if (productListView) productListView->update();
 }
 
 void NVSP::render(SDL_Renderer* renderer) {
@@ -93,7 +83,10 @@ void NVSP::render(SDL_Renderer* renderer) {
 }
 
 void NVSP::onEnter() {
-
+    // Reload product data from file to reflect any deletions/additions from admin screen
+    if (productListView && app && app->getRenderer()) {
+        productListView->loadFromFile(app->getRenderer(), "data/Item/Item.txt");
+    }
 }
 
 void NVSP::onExit() {

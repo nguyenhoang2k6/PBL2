@@ -45,6 +45,17 @@ void Table::addRow(const std::vector<std::string>& rowData) {
     if (m_maxScroll > 0) m_scrollOffset = m_maxScroll;
 }
 
+void Table::setColumns(const std::vector<std::string>& headers,
+                       const std::vector<float>& colWidths) {
+    if (headers.size() != colWidths.size()) {
+        std::cerr << "Loi Table: headers va colWidths khong khop" << std::endl;
+        return;
+    }
+    m_headers = headers;
+    m_colWidths = colWidths;
+    clear();
+}
+
 // --- XỬ LÝ SỰ KIỆN ---
 
 void Table::handleEvent(const SDL_Event& e) {

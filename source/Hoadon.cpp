@@ -7,6 +7,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <iomanip>
+#include <filesystem>
 
 using namespace std;
 
@@ -137,7 +138,8 @@ bool Hoadon::luuHoadonVaoFile() {
     file.close();
 
     // Lưu lịch sử (Log)
-    ofstream log("History/log.txt", ios::app);
+    std::filesystem::create_directories("data/history");
+    ofstream log("data/history/log.txt", ios::app);
     if (log) {
         log << day << " " << month << " " << year << " "
             << maNV << " " << maHD << " " << price << endl;
@@ -256,4 +258,31 @@ int Hoadon::getSoLuongAt(int index) const {
 // Trả về tổng tiền
 long long Hoadon::getTongTien() const {
     return price;
+}
+
+// Giảm số lượng vật phẩm (nếu tồn tại). Nếu số lượng sau giảm <= 0 thì xóa dòng hoàn toàn.
+void Hoadon::giamVatPham(const string &maItem, int sl_giam) {
+    int index = -1;
+    for (int i = 0; i < total; i++) {
+        if (Menu[i].getmaItem() == maItem) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) return; // không có trong hóa đơn
+
+    // giảm số lượng
+    soluong[index] -= sl_giam;
+    if (soluong[index] <= 0) {
+        // xóa dòng và dồn mảng
+        for (int i = index; i < total - 1; i++) {
+            Menu[i] = Menu[i + 1];
+            soluong[i] = soluong[i + 1];
+        }
+        total--;
+    }
+
+    // luôn cập nhật lại tổng tiền
+    tinhTongTien();
 }

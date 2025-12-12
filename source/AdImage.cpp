@@ -1,7 +1,9 @@
 #include <app/AdImage.h>
 
 // QUAN TRỌNG: Phải define cái này để Windows không định nghĩa lại min/max gây lỗi
+#ifndef NOMINMAX
 #define NOMINMAX 
+#endif
 
 #include <windows.h>   // Thư viện Windows
 #include <commdlg.h>   // Thư viện hộp thoại Common Dialog

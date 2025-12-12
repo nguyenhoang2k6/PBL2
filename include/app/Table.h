@@ -49,6 +49,10 @@ public:
     // Thêm một hàng dữ liệu mới (danh sách các chuỗi)
     void addRow(const std::vector<std::string>& rowData);
 
+    // Thay đổi cấu hình cột (header + width)
+    void setColumns(const std::vector<std::string>& headers,
+                    const std::vector<float>& colWidths);
+
     // --- HÀM HỆ THỐNG ---
     void handleEvent(const SDL_Event& e);
     void render();

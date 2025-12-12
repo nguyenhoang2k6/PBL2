@@ -22,6 +22,7 @@ private:
     // Cột
     std::vector<float> m_colWidths;
     std::vector<std::string> m_headers;
+    float m_deleteColWidth;
 
     // Màu sắc (Thêm vào để khớp với constructor trong .cpp)
     SDL_Color m_headerColor;
@@ -32,6 +33,8 @@ private:
 
     // Helper
     void renderCell(float x, float y, float w, float h, const std::string& text, bool isHeader);
+    bool hitDeleteButton(float mx, float my, size_t rowIndex) const;
+    size_t rowIndexAt(float my) const;
 
 public:
     EmployeeTable(float x, float y, float w, float h, TTF_Font* font, SDL_Renderer* renderer);

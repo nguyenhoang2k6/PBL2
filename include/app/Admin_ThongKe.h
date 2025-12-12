@@ -35,6 +35,8 @@ private:
 
     // Bảng hiển thị kết quả
     Table* m_table; 
+    float m_tableWidth;
+    float m_tableHeight;
 
     // --- TRẠNG THÁI ---
     enum Mode { VIEW_DAY, VIEW_MONTH, VIEW_YEAR, VIEW_STAFF };

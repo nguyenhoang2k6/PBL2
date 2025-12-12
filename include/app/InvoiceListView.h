@@ -33,8 +33,8 @@ public:
             // Tính toán vị trí Y cho dòng này
             float currentY = this->y + (i * rowHeight);
 
-            // Tạo dòng mới (Tái sử dụng Itemrow)
-            Itemrow* newRow = new Itemrow(renderer, item, this->x, currentY, this->width, rowHeight, app);
+            // Tạo dòng mới (Tái sử dụng Itemrow). Hóa đơn cần nút xóa để gỡ món khỏi hóa đơn.
+            Itemrow* newRow = new Itemrow(renderer, item, this->x, currentY, this->width, rowHeight, app, true);
             
             rows.push_back(newRow);
         }

@@ -1,0 +1,12 @@
+Ngay thu ngan: 11/12/2025
+Nhan vien thu ngan: NV011
+Ten mon                       So luong  Don gia   Thanh tien
+---------------------------------------------------------------
+Espresso                      1         22000     22000     
+Latte                         1         28000     28000     
+Mocha                         1         30000     30000     
+Macchiato                     1         24000     24000     
+Tra sua                       1         20000     20000     
+Tra sua chan trau             2         24000     48000     
+---------------------------------------------------------------
+Tong gia tien: 172000

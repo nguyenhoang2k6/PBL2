@@ -48,7 +48,7 @@ void Admin_NV::handleEvent(const SDL_Event& e) {
     if(button_back){button_back->handleEvent(e);}
 
     if(button_add && button_add->isClicked()) {
-        app->changeScreen("AddEmployee");
+        app->changeScreen("Admin_AddEmploy");
     }
     if(button_back && button_back->isClicked()) {
         app->changeScreen("AdminDashBoard");
@@ -67,8 +67,12 @@ void Admin_NV::render(SDL_Renderer* renderer) {
     if(button_back) {button_back->render(renderer);}
 }
 
-void Admin_NV::onEnter() {
 
+void Admin_NV::onEnter() {
+    // Reload employee data to reflect any additions/deletions
+    if (m_table) {
+        m_table->reloadData();
+    }
 }
 
 void Admin_NV::onExit() {

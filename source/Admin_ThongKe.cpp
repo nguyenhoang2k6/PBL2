@@ -3,6 +3,10 @@
 #include <app/Label.h>
 #include <app/TextBox.h>
 #include <app/Color.h>// Để dùng màu sắc chuẩn
+#include <app/Nhanvien.h>
+#include <filesystem>
+#include <algorithm>
+#include <cctype>
 
 Admin_ThongKe::Admin_ThongKe(App* app) : Screen(app) {
     // Khởi tạo nullptr
@@ -39,7 +43,7 @@ bool Admin_ThongKe::Init() {
     SDL_Renderer* renderer = app->getRenderer();
     
     // 1. Tiêu đề
-    m_lblTitle = new Label("THONG KE DOANH THU", COLOR_WARNING, 1000, 100, fontTitle, renderer);
+    m_lblTitle = new Label("THỐNG KÊ DOANH THU", COLOR_WARNING, 1000, 100, fontTitle, renderer);
 
     // 2. Các nút chọn chế độ (Tab) - Hàng ngang
     // Màu xám cho nút chưa chọn, màu xanh cho nút đang chọn (xử lý trong update)
@@ -47,31 +51,34 @@ bool Admin_ThongKe::Init() {
     float btnW = 275;
     float gap = 50;
     
-    m_btnByDay   = new Button(startX, 180, btnW, 75, {200,200,200,255}, "Theo Ngay", renderer, font, {0,0,0,255});
-    m_btnByMonth = new Button(startX + (btnW+gap)*1, 180, btnW, 75, {200,200,200,255}, "Theo Thang", renderer, font, {0,0,0,255});
-    m_btnByYear  = new Button(startX + (btnW+gap)*2, 180, btnW, 75, {200,200,200,255}, "Theo Nam", renderer, font, {0,0,0,255});
-    m_btnByStaff = new Button(startX + (btnW+gap)*3, 180, btnW, 75, {200,200,200,255}, "Nhan Vien", renderer, font, {0,0,0,255});
+    m_btnByDay   = new Button(startX, 180, btnW, 75, {200,200,200,255}, "Theo Ngày", renderer, font, {0,0,0,255});
+    m_btnByMonth = new Button(startX + (btnW+gap)*1, 180, btnW, 75, {200,200,200,255}, "Theo Tháng", renderer, font, {0,0,0,255});
+    m_btnByYear  = new Button(startX + (btnW+gap)*2, 180, btnW, 75, {200,200,200,255}, "Theo Năm", renderer, font, {0,0,0,255});
+    m_btnByStaff = new Button(startX + (btnW+gap)*3, 180, btnW, 75, {200,200,200,255}, "Nhân Viên", renderer, font, {0,0,0,255});
 
 
 
-    m_txtDay   = new TextBox(50, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Ngay", COLOR_GRAY_SILVER);
-    m_txtMonth = new TextBox(300, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Thang", COLOR_GRAY_SILVER);
-    m_txtYear  = new TextBox(550, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Nam", COLOR_GRAY_SILVER);
-    m_txtMaNV  = new TextBox(800, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Ma NV", COLOR_GRAY_SILVER);
+    m_txtDay   = new TextBox(50, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Ngày", COLOR_GRAY_SILVER);
+    m_txtMonth = new TextBox(300, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Tháng", COLOR_GRAY_SILVER);
+    m_txtYear  = new TextBox(550, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Năm", COLOR_GRAY_SILVER);
+    m_txtMaNV  = new TextBox(800, 305, 200, 40, COLOR_WHITE, COLOR_BLACK, app, font, "Mã NV", COLOR_GRAY_SILVER);
 
     // 4. Nút Tìm kiếm & Quay lại
-    m_btnSearch = new Button(1050, 305, 250, 75,COLOR_UI_GREEN, "Xem", renderer, font, COLOR_WHITE);
-    m_btnBack   = new Button(2482, 0, 250, 75, COLOR_UI_RED, "Back", renderer, font, COLOR_WHITE); // Góc trên phải
+    m_btnSearch = new Button(1300, 305, 200, 60,COLOR_UI_GREEN, "Xem", renderer, font, COLOR_WHITE);
+    m_btnBack   = new Button(2482, 0, 250, 75, COLOR_UI_RED, "Quay lại", renderer, font, COLOR_WHITE); // Góc trên phải
 
     // 5. Label Tổng kết
-    m_lblTotalRevenue = new Label("Tong: 0 VND",COLOR_GREEN, 50, 395, font, renderer);
+    m_lblTotalRevenue = new Label("Tổng: 0 VND",COLOR_GREEN, 50, 395, font, renderer);
 
     // 6. Bảng hiển thị (Table)
     // Định nghĩa cột cho bảng Doanh Thu
-    std::vector<std::string> headers = {"Ma HD", "Ngay Lap", "Doanh Thu", "Nguoi Lap"};
-    std::vector<float> widths = {400.0f, 500.0f, 600.0f, 1232.0f}; // Tổng 1000px
+    std::vector<std::string> headers = {"Mã HĐ", "Ngày lập", "Doanh thu", "Người lập", "Ghi chú"};
+    // Chia lại độ rộng: thu hẹp cột "Ghi chú" và tăng không gian cho các cột còn lại
+    std::vector<float> widths = {500.0f, 500.0f, 520.0f, 420.0f, 792.0f};
 
-    m_table = new Table(0, 450,2732,1086 , font, renderer, headers, widths);
+    m_tableWidth = 2732;
+    m_tableHeight = 1086;
+    m_table = new Table(0, 450, m_tableWidth, m_tableHeight, font, renderer, headers, widths);
 
     // Cài đặt màu ban đầu cho nút chế độ
     resetButtonColors();
@@ -95,7 +102,8 @@ void Admin_ThongKe::onEnter() {
     m_txtMonth->setText("");
     m_txtYear->setText("");
     m_txtMaNV->setText("");
-    m_lblTotalRevenue->setText("Tong: 0 VND");
+    m_lblTotalRevenue->setColor(COLOR_GREEN);
+    m_lblTotalRevenue->setText("Tổng: 0 VND");
     m_table->clear();
     
     // Reset chế độ về Ngày
@@ -138,77 +146,141 @@ void Admin_ThongKe::update() {
             m_txtMaNV->update();
             break;
     }
-
-    // 4. Xử lý tìm kiếm
-    if (m_btnSearch->isClicked()) {
-        performSearch();
-    }
-
-    // 5. Xử lý nút Back (Quay về Dashboard hoặc Menu)
-    if (m_btnBack->isClicked()) {
-        app->changeScreen("AdminDasBoard"); // Hoặc tên màn hình bạn muốn
-    }
 }
 
 void Admin_ThongKe::performSearch() {
+    auto trim = [](std::string s) {
+        while (!s.empty() && std::isspace(static_cast<unsigned char>(s.front()))) s.erase(s.begin());
+        while (!s.empty() && std::isspace(static_cast<unsigned char>(s.back()))) s.pop_back();
+        return s;
+    };
+    auto isDigits = [](const std::string& s) {
+        return !s.empty() && std::all_of(s.begin(), s.end(), [](unsigned char c){ return std::isdigit(c); });
+    };
+    auto formatCurrency = [](long long value) {
+        std::string s = std::to_string(value);
+        std::string out;
+        int count = 0;
+        for (int i = static_cast<int>(s.size()) - 1; i >= 0; --i) {
+            out.push_back(s[i]);
+            if (++count == 3 && i != 0) {
+                out.push_back('.');
+                count = 0;
+            }
+        }
+        std::reverse(out.begin(), out.end());
+        out += "đ";
+        return out;
+    };
+    auto setError = [this](const std::string& msg) {
+        m_lblTotalRevenue->setColor({255, 0, 0, 255});
+        m_lblTotalRevenue->setText(msg);
+        m_table->clear();
+    };
+    auto setSuccess = [this](const std::string& msg) {
+        m_lblTotalRevenue->setColor(COLOR_GREEN);
+        m_lblTotalRevenue->setText(msg);
+    };
+
     std::vector<ThongKeItem> results;
     
     try {
         if (m_currentMode == VIEW_DAY) {
-            std::string dStr = m_txtDay->getText();
-            std::string mStr = m_txtMonth->getText();
-            std::string yStr = m_txtYear->getText();
-            if(dStr.empty() || mStr.empty() || yStr.empty()) return; // Bỏ qua nếu rỗng
+            std::string dStr = trim(m_txtDay->getText());
+            std::string mStr = trim(m_txtMonth->getText());
+            std::string yStr = trim(m_txtYear->getText());
+            if(!isDigits(dStr) || !isDigits(mStr) || !isDigits(yStr)) {
+                setError("Ngày/Tháng/Năm không hợp lệ");
+                return;
+            }
 
             int d = std::stoi(dStr);
             int m = std::stoi(mStr);
             int y = std::stoi(yStr);
+            if (!ThongKe::isValidDate(d, m, y)) {
+                setError("Ngày/Tháng/Năm không hợp lệ");
+                return;
+            }
             results = ThongKe::getByDay(d, m, y);
         } 
         else if (m_currentMode == VIEW_MONTH) {
-            std::string mStr = m_txtMonth->getText();
-            std::string yStr = m_txtYear->getText();
-            if(mStr.empty() || yStr.empty()) return;
+            std::string mStr = trim(m_txtMonth->getText());
+            std::string yStr = trim(m_txtYear->getText());
+            if(!isDigits(mStr) || !isDigits(yStr)) {
+                setError("Tháng/Năm không hợp lệ");
+                return;
+            }
 
             int m = std::stoi(mStr);
             int y = std::stoi(yStr);
+            if (m < 1 || m > 12 || y < 0) {
+                setError("Tháng/Năm không hợp lệ");
+                return;
+            }
             results = ThongKe::getByMonth(m, y);
         }
         else if (m_currentMode == VIEW_YEAR) {
-            std::string yStr = m_txtYear->getText();
-            if(yStr.empty()) return;
+            std::string yStr = trim(m_txtYear->getText());
+            if(!isDigits(yStr)) {
+                setError("Năm không hợp lệ");
+                return;
+            }
 
             int y = std::stoi(yStr);
+            if (y < 0) {
+                setError("Năm không hợp lệ");
+                return;
+            }
             results = ThongKe::getByYear(y);
         }
         else if (m_currentMode == VIEW_STAFF) {
-            std::string ma = m_txtMaNV->getText();
-            if(ma.empty()) return;
+            std::string ma = trim(m_txtMaNV->getText());
+            if(ma.empty()) {
+                setError("Mã NV không được để trống");
+                return;
+            }
+            if(!NhanVien::exists(ma)) {
+                setError("Mã NV không tồn tại");
+                return;
+            }
             results = ThongKe::getByStaff(ma);
         }
     } 
     catch (...) {
-        std::cerr << "Loi nhap lieu: Khong phai so!" << std::endl;
+        setError("Không tìm thấy hóa đơn hợp lệ");
         return;
     }
 
+    // --- Lọc chỉ lấy hóa đơn có file tồn tại ---
+    std::vector<ThongKeItem> valid;
+    for (const auto& item : results) {
+        std::filesystem::path p = std::filesystem::path("data/Hoadon") / (item.maHD + ".txt");
+        if (std::filesystem::exists(p)) {
+            valid.push_back(item);
+        }
+    }
+
     // --- CẬP NHẬT GIAO DIỆN ---
+    if (valid.empty()) {
+        setError("Khong tim thay hoa don hop le");
+        return;
+    }
+
+    // Trả về cấu hình bảng cho chế độ thống kê
+    m_table->setColumns({"Mã HĐ", "Ngày lập", "Doanh thu", "Người lập", "Ghi chú"}, {500.0f, 500.0f, 520.0f, 420.0f, 792.0f});
 
     // 1. Tính tổng
-    long long total = ThongKe::calculateTotal(results);
-    m_lblTotalRevenue->setText("Tong: " + std::to_string(total) + " VND");
+    long long total = ThongKe::calculateTotal(valid);
+    setSuccess("Tổng: " + formatCurrency(total));
 
     // 2. Đổ vào bảng
     m_table->clear();
-    for (const auto& item : results) {
-        // Chuyển đổi dữ liệu sang vector<string> để Table hiển thị
-        m_table->addRow({
-            item.maHD, 
-            item.ngay, 
-            std::to_string(item.doanhThu), 
-            item.maNV
-        });
+    for (const auto& item : valid) {
+        m_table->addRow({ item.maHD, item.ngay, formatCurrency(item.doanhThu), item.maNV, "" });
     }
+
+    // Dòng tổng doanh thu
+    m_table->addRow({ "Tổng", "", formatCurrency(total), "", "" });
 }
 
 void Admin_ThongKe::handleEvent(const SDL_Event& e) {
@@ -236,7 +308,12 @@ void Admin_ThongKe::handleEvent(const SDL_Event& e) {
         m_currentMode = VIEW_STAFF;
         resetButtonColors();
     }
-        // Nút Back không thay đổi chế độ
+    
+    // Xử lý nút tìm kiếm
+    if (m_btnSearch->isClicked()) {
+        performSearch();
+    }
+    
     // TextBox chỉ nhận sự kiện nếu đang ở chế độ tương ứng
     // Điều này ngăn người dùng click vào ô "Ngày" khi đang ở chế độ "Theo Năm" (vốn ô Ngày bị ẩn)
     switch (m_currentMode) {

@@ -21,7 +21,7 @@ private:
 
 public:
     // Cần truyền thêm SDL_Renderer vào Constructor để load ảnh
-    Itemrow(SDL_Renderer* renderer, const Item& item, float startX, float startY, float rowW, float rowH, App* app) {
+    Itemrow(SDL_Renderer* renderer, const Item& item, float startX, float startY, float rowW, float rowH, App* app, bool showDelete) {
         this->data = item;
         this->x = startX;
         this->y = startY;
@@ -58,7 +58,7 @@ public:
         // Nút xóa nằm cuối dòng, rộng hơn và lùi vào trong 10px
         float btnW = 100.0f;
         float btnH = rowH - (imgPadding * 2);
-        btnDelete = new Button(x + rowW - btnW - 20.0f, y + imgPadding, btnW, btnH, COLOR_RED, "X", renderer, app->getFont2(), COLOR_WHITE);
+        btnDelete = showDelete ? new Button(x + rowW - btnW - 20.0f, y + imgPadding, btnW, btnH, COLOR_RED, "X", renderer, app->getFont2(), COLOR_WHITE) : nullptr;
     }
 
     ~Itemrow() {
@@ -80,7 +80,7 @@ public:
         float labelY = newY + (height / 2) - 10.0f;
         if (lblName) lblName->setPosition(x + textOffsetX, labelY);
         if (lblPrice) lblPrice->setPosition(x + textOffsetX + 400.0f, labelY);
-        btnDelete->setPosition(x + width - 100.0f - 20.0f, newY + imgPadding);
+        if (btnDelete) btnDelete->setPosition(x + width - 100.0f - 20.0f, newY + imgPadding);
     }
 
     void render(SDL_Renderer* renderer) {
@@ -101,14 +101,20 @@ public:
         productImage->render(renderer);
         if (lblName) lblName->render(renderer);
         if (lblPrice) lblPrice->render(renderer);
-        btnDelete->render(renderer);
+        if (btnDelete) btnDelete->render(renderer);
     }
 
+    // Update interactive components (hover state)
+    void update() {
+        if (btnDelete) btnDelete->update();
+    }
+
+    // Forward events to interactive components (buttons)
     void handleEvent(const SDL_Event& e) {
-        btnDelete->handleEvent(e);
+        if (btnDelete) btnDelete->handleEvent(e);
     }
     bool checkDeleteClick(float mouseX, float mouseY) {
-        return btnDelete->isClicked();
+        return btnDelete ? btnDelete->isClicked() : false;
     }
     
     std::string getCode() { return data.getmaItem(); }

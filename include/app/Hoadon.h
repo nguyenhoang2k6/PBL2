@@ -30,6 +30,8 @@ public:
     void themVatPham(const Item &item, int sl_them); // Logic nút Thêm
     void xoaVatPham(const string &maItem);           // Logic nút Xóa
     void tinhTongTien();                             // Hàm nội bộ tính lại tiền
+    // Giảm số lượng một mặt hàng trong hóa đơn. Nếu số lượng <= 0 thì xóa dòng.
+    void giamVatPham(const string &maItem, int sl_giam);
 
     int getSoLuongMatHang() const; 
 

@@ -19,6 +19,10 @@ public:
     Label(const string& text, SDL_Color textColor,float x,float y,TTF_Font* font, SDL_Renderer* renderer);
     ~Label();
     void setText(const string& newText);
+    void setColor(const SDL_Color& newColor) {
+        textColor = newColor;
+        setText(text); // Re-render texture with new color
+    }
     void setPosition(float x, float y) {
         this->x = x;
         this->y = y;

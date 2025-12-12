@@ -11,7 +11,7 @@ EmployeeTable::EmployeeTable(float x, float y, float w, float h, TTF_Font* font,
       m_scrollOffset(0), m_maxScroll(0)
 {
     // --- 2. CẤU HÌNH CỘT ---
-    m_headers = {"Ma NV", "Ten NV", "Chuc Vu", "Tuoi", "Dia Chi", "SDT"};
+    m_headers = {"Ma NV", "Ten NV", "Chuc Vu", "Tuoi", "Dia Chi", "SDT", "Xoa"};
     
     // Tổng chiều rộng: 100+220+150+60+320+150 = 1000 (Khớp với width bảng)
     m_colWidths = {
@@ -20,8 +20,11 @@ EmployeeTable::EmployeeTable(float x, float y, float w, float h, TTF_Font* font,
         400.0f,  // Chức vụ
         100.0f,   // Tuổi
         800.0f,  // Địa chỉ
-        432.0f   // SĐT
+        332.0f   // SĐT
     }; 
+    m_deleteColWidth = 100.0f;
+    // Tổng width cần đủ
+    m_colWidths.push_back(m_deleteColWidth);
 
     // --- 3. CHỈNH MÀU SẮC (Quan trọng) ---
     // Để bảng "hòa nhập" với nền, ta dùng màu COLOR_CREAM (Màu kem)
@@ -86,6 +89,25 @@ void EmployeeTable::handleEvent(const SDL_Event& e) {
             // Kẹp giá trị (Clamp) để không cuộn quá lố
             if(m_scrollOffset < 0) m_scrollOffset = 0;
             if(m_scrollOffset > m_maxScroll) m_scrollOffset = m_maxScroll;
+        }
+    }
+    if (e.type == SDL_EVENT_MOUSE_BUTTON_UP && e.button.button == SDL_BUTTON_LEFT) {
+        float mx = (float)e.button.x;
+        float my = (float)e.button.y;
+        // Chỉ xử lý nếu click trong vùng bảng
+        SDL_FRect tableRect = {x, y, width, height};
+        SDL_FPoint pt{mx, my};
+        if (SDL_PointInRectFloat(&pt, &tableRect)) {
+            size_t idx = rowIndexAt(my);
+            if (idx < m_data.size()) {
+                if (hitDeleteButton(mx, my, idx)) {
+                    // Xóa nhân viên theo mã
+                    const std::string code = m_data[idx].getMaNV();
+                    if (NhanVien::remove(code)) {
+                        reloadData();
+                    }
+                }
+            }
         }
     }
 }
@@ -179,6 +201,19 @@ void EmployeeTable::render() {
         
         // Cột 5: SĐT
         renderCell(currentX, currentY, m_colWidths[5], rowHeight, nv.getSDT(), false);
+        currentX += m_colWidths[5];
+
+        // Cột 6: Nút Xóa
+        // Vẽ nền nút
+        SDL_Color delBg = {200, 60, 60, 255};
+        SDL_SetRenderDrawColor(m_renderer, delBg.r, delBg.g, delBg.b, delBg.a);
+        SDL_FRect delRect = {currentX + 10.0f, currentY + 10.0f, m_deleteColWidth - 20.0f, rowHeight - 20.0f};
+        SDL_RenderFillRect(m_renderer, &delRect);
+        // Viền
+        SDL_SetRenderDrawColor(m_renderer, 120, 20, 20, 255);
+        SDL_RenderRect(m_renderer, &delRect);
+        // Chữ "X"
+        renderCell(currentX, currentY, m_deleteColWidth, rowHeight, "X", true);
 
         currentY += rowHeight;
     }
@@ -199,9 +234,29 @@ void EmployeeTable::render() {
         renderCell(headerX, y, m_colWidths[i], headerHeight, m_headers[i], true);
         headerX += m_colWidths[i];
     }
-    
+
     // Vẽ khung viền bao quanh toàn bộ bảng
     SDL_SetRenderDrawColor(m_renderer, m_borderColor.r, m_borderColor.g, m_borderColor.b, m_borderColor.a);
     SDL_FRect outline = {x, y, width, height};
     SDL_RenderRect(m_renderer, &outline);
+}
+
+// --- Helpers ---
+size_t EmployeeTable::rowIndexAt(float my) const {
+    // Tính vị trí hàng từ tọa độ y chuột
+    float top = y + headerHeight;
+    float relY = my - top + m_scrollOffset;
+    if (relY < 0) return (size_t)-1;
+    return (size_t)(relY / rowHeight);
+}
+
+bool EmployeeTable::hitDeleteButton(float mx, float my, size_t rowIndex) const {
+    float rowY = y + headerHeight + rowIndex * rowHeight - m_scrollOffset;
+    float currentX = x;
+    for (size_t i = 0; i < m_colWidths.size() - 1; ++i) {
+        currentX += m_colWidths[i];
+    }
+    SDL_FRect delRect = {currentX + 10.0f, rowY + 10.0f, m_deleteColWidth - 20.0f, rowHeight - 20.0f};
+    SDL_FPoint pt{mx, my};
+    return SDL_PointInRectFloat(&pt, &delRect);
 }

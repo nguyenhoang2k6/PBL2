@@ -50,7 +50,8 @@ public:
 
         for (int i = 0; i < (int)dataItems.size(); ++i) {
             float currentY = startY + (i * rowHeight);
-            Itemrow* newRow = new Itemrow(renderer, dataItems[i], startX, currentY, rowW, rowHeight, app);
+            // NVHD sidebar uses delete to remove from invoice; keep delete visible here
+            Itemrow* newRow = new Itemrow(renderer, dataItems[i], startX, currentY, rowW, rowHeight, app, true);
             rows.push_back(newRow);
         }
     }
@@ -109,6 +110,25 @@ public:
             if (drawY + rowHeight > startY && drawY < startY + viewHeight) rows[i]->render(renderer);
         }
         SDL_SetRenderClipRect(renderer, nullptr);
+    }
+
+    // Update interactive elements (hover states) for each row
+    void update() {
+        for (auto row : rows) {
+            if (row) row->update();
+        }
+    }
+
+    // Forward events to child rows so their buttons can process clicks
+    void handleEvent(const SDL_Event& e) {
+        if (e.type == SDL_EVENT_MOUSE_MOTION || e.type == SDL_EVENT_MOUSE_BUTTON_DOWN || e.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+            for (auto row : rows) {
+                if (row) {
+                    row->update();
+                    row->handleEvent(e);
+                }
+            }
+        }
     }
 
     // file operations

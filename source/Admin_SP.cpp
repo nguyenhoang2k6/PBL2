@@ -51,17 +51,18 @@ Admin_SP::~Admin_SP() {
 void Admin_SP::handleEvent(const SDL_Event& e) {
     // Forward events to the product list view (scroll, clicks)
     if (productListView) {
+        // ensure rows/buttons receive motion/down/up to update hover/click states
+        productListView->handleEvent(e);
         if (e.type == SDL_EVENT_MOUSE_WHEEL) {
             productListView->handleScroll((float)e.wheel.y);
         }
-        if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+        if (e.type == SDL_EVENT_MOUSE_BUTTON_UP) {
             if (e.button.button == SDL_BUTTON_LEFT) {
                 float mx = (float)e.button.x;
                 float my = (float)e.button.y;
                 std::string code = productListView->checkClick(mx, my);
                 if (!code.empty()) {
                     std::cerr << "Clicked delete for item: " << code << std::endl;
-                    // Attempt to remove from data file and reload
                     SDL_Renderer* rdr = app->getRenderer();
                     bool ok = productListView->removeItem(code, rdr);
                     if (!ok) {
@@ -79,6 +80,9 @@ void Admin_SP::handleEvent(const SDL_Event& e) {
     }
     if (button_back->isClicked()) {
         app->changeScreen("AdminDashBoard");
+    }
+    if (button_add->isClicked()) {
+        app->changeScreen("Admin_AddProduct");
     }
 
 }
@@ -105,7 +109,10 @@ void Admin_SP::render(SDL_Renderer* renderer) {
 }
 
 void Admin_SP::onEnter() {
-
+    // Reload product data from file to reflect any additions/deletions
+    if (productListView && app && app->getRenderer()) {
+        productListView->loadFromFile(app->getRenderer(), "data/Item/Item.txt");
+    }
 }
 
 void Admin_SP::onExit() {

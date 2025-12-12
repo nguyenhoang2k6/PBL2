@@ -15,6 +15,8 @@
 #include <app/Admin_NV.h>
 #include <app/Admin_ThongKe.h>
 #include <app/Admin_SP.h>
+#include <app/Admin_AddProduct.h>
+#include <app/Admin_AddEmploy.h>
 #include <app/Color.h>
 
 App::App() : 
@@ -318,7 +320,61 @@ bool App::init() {
         SDL_Quit();
         return false;
     }
+    Screen* adminAddProduct = new Admin_AddProduct(this);
+    if (!adminAddProduct->Init()) {
+        std::cerr << "Không khởi tạo được Admin_AddProduct" << std::endl;
+        delete adminAddProduct;
+        delete adminSP;
+        delete adminThongKe;
+        delete adminNV;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+    // Create Add Employee screen
+    Screen* adminAddEmploy = new Admin_AddEmploy(this);
+    if (!adminAddEmploy->Init()) {
+        std::cerr << "Không khởi tạo được Admin_AddEmploy" << std::endl;
+        delete adminAddEmploy;
+        delete adminAddProduct;
+        delete adminSP;
+        delete adminThongKe;
+        delete adminNV;
+        delete adminNewPass;
+        delete nvNewPass;
+        delete nvhd;
+        delete nvsp;
+        delete adminDashBoard;
+        delete nvDashBoard;
+        delete loginAdmin;
+        delete loginNV;
+        delete mainMenu;
+        TTF_CloseFont(font1);
+        TTF_CloseFont(font2);
+        TTF_CloseFont(font3);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
     ScreenCache["Admin_SP"] = adminSP;
+    ScreenCache["Admin_AddProduct"] = adminAddProduct;
+    ScreenCache["Admin_AddEmploy"] = adminAddEmploy;
     ScreenCache["Admin_ThongKe"] = adminThongKe;
     ScreenCache["Admin_NV"] = adminNV;
     ScreenCache["Admin_NewPass"] = adminNewPass;

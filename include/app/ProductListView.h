@@ -20,6 +20,7 @@ private:
     Label* hdrCode = nullptr;
     Label* hdrName = nullptr;
     Label* hdrPrice = nullptr;
+    bool showDelete = true; // hiển thị nút xóa trên mỗi dòng
 
 public:
     ProductListView() : app(nullptr), dataFilePath("") {}
@@ -72,7 +73,7 @@ public:
 
             // Tạo dòng mới: Truyền renderer vào để load ảnh
             // Kích thước dòng: Rộng = rowW, Cao = rowHeight
-            Itemrow* newRow = new Itemrow(renderer, dataItems[i], startX, currentY, rowW, rowHeight, app);
+            Itemrow* newRow = new Itemrow(renderer, dataItems[i], startX, currentY, rowW, rowHeight, app, showDelete);
             rows.push_back(newRow);
         }
     }
@@ -113,6 +114,7 @@ public:
      * @return Mã sản phẩm cần xóa (nếu có), hoặc chuỗi rỗng
      */
     std::string checkClick(float mouseX, float mouseY) {
+        if (!showDelete) return "";
         for (auto row : rows) {
             // Itemrow sẽ tự kiểm tra xem chuột có nằm trong nút xóa của nó không
             // Lưu ý: Itemrow đã được cập nhật vị trí Y mới nhất trong hàm render()
@@ -207,10 +209,33 @@ public:
         SDL_SetRenderClipRect(renderer, nullptr);
     }
 
+    // Update interactive elements (hover states) for each row
+    void update() {
+        for (auto row : rows) {
+            if (row) row->update();
+        }
+    }
+
+    // Forward events to child rows so their buttons can process clicks
+    void handleEvent(const SDL_Event& e) {
+        if (e.type == SDL_EVENT_MOUSE_MOTION || e.type == SDL_EVENT_MOUSE_BUTTON_DOWN || e.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+            for (auto row : rows) {
+                if (row) {
+                    // ensure hovered state is up-to-date before handling event
+                    row->update();
+                    row->handleEvent(e);
+                }
+            }
+        }
+    }
+
     // Load items from a simple text file: each item is 3 lines: code, name, price
     void loadFromFile(SDL_Renderer* renderer, const std::string& filepath);
 
     // Remove an item by code: makes a backup of the original file, rewrites file
     // without the deleted item, and reloads the view. Returns true on success.
     bool removeItem(const std::string& code, SDL_Renderer* renderer);
+
+    // Setter: cấu hình hiển thị nút xóa (Admin: true, NV: false)
+    void setShowDelete(bool enabled) { showDelete = enabled; }
 };
