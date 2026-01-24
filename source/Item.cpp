@@ -3,155 +3,130 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <cstdio> // Cho remove và rename
+#include <cstdio>
 using namespace std;
 
-// Khai báo sớm (Forward declaration) cho hàm loadAllItems vì nó được dùng trong check_exist
 bool loadAllItems(vector<Item> &items);
 
-/**
- * @brief Overload operator << để xuất thông tin Item (Đã giả định là friend trong Item.h)
- * @param out Output stream
- * @param p Item cần xuất
- * @return Output stream
- */
+// Ghi thông tin Item ra stream
 std::ostream& operator<<(std::ostream &out, const Item &p) {
-    // Truy cập trực tiếp được chấp nhận nếu là friend function
     out << p.maItem << endl; 
     out << p.tenItem << endl; 
     out << p.price << endl; 
     return out;
 }
 
-/**
- * @brief Kiểm tra item đã tồn tại chưa
- * @param x Item cần kiểm tra
- * @return true nếu tồn tại, false nếu không
- */
+// Kiểm tra mã Item đã tồn tại
 bool check_exist(const Item &x) {
     vector<Item> items;
     if (!loadAllItems(items)) {
-        return false; // Không thể đọc file
+        return false;
     }
     
-    // Duyệt qua tất cả items để kiểm tra trùng mã, sử dụng getter
     for (const auto &item : items) {
-        if (x.getmaItem() == item.getmaItem()) { // Đã sửa: dùng getmaItem()
-            return true; // Mã đã tồn tại
+        if (x.getmaItem() == item.getmaItem()) {
+            return true;
         }
     }
-    return false; // Mã chưa tồn tại
+    return false;
 }
 
-/**
- * @brief Overload operator >> để nhập thông tin Item (Đã giả định là friend trong Item.h)
- * @param in Input stream 
- * @param p Item cần nhập
- * @return Input stream
- */
+// Đọc thông tin Item từ stream (console)
 std::istream& operator>>(std::istream &in, Item &p) {
     string tempMa;
     cout << "Nhap ma mat hang: ";
     getline(in, tempMa); 
-    p.setmaItem(tempMa); // Đã sửa: dùng setter để gán
+    p.setmaItem(tempMa);
 
-    // Kiểm tra và yêu cầu nhập lại nếu mã đã tồn tại
     while(check_exist(p)) {
         cout << "Ma mat hang da duoc su dung, nhap lai: ";
         getline(in, tempMa);
-        p.setmaItem(tempMa); // Đã sửa: dùng setter để gán
+        p.setmaItem(tempMa);
     }
     
     string tempTen;
     cout << "Nhap ten mat hang: ";
     getline(in, tempTen); 
-    p.setTenItem(tempTen); // Đã sửa: dùng setter để gán
+    p.setTenItem(tempTen);
     
     int tempPrice;
     cout << "Nhap gia: ";
     in >> tempPrice; 
-    p.setPrice(tempPrice); // Đã sửa: dùng setter để gán
+    p.setPrice(tempPrice);
 
-    in.ignore(); // Xóa bộ đệm sau khi nhập số
+    in.ignore();
     return in;
 }
 
-// Các hàm getter/setter (Định nghĩa lại để đảm bảo đúng cú pháp Item::)
-
+// Đặt mã mặt hàng
 void Item::setmaItem(string maIteam) {
     this->maItem = maIteam;
 }
 
-string Item::getmaItem() const { // Thêm const cho getter nếu maItem không đổi
+// Lấy mã mặt hàng
+string Item::getmaItem() const {
     return maItem;
 }
 
+// Đặt tên mặt hàng
 void Item::setTenItem(string tenIteam) {
     this->tenItem = tenIteam;
 }
 
-string Item::getTenItem() const { // Thêm const cho getter
+// Lấy tên mặt hàng
+string Item::getTenItem() const {
     return tenItem;
 }
 
+// Đặt giá
 void Item::setPrice(int price) {
     this->price = price;
 }
 
-int Item::getprice() const { // Thêm const cho getter
+// Lấy giá
+int Item::getprice() const {
     return price;
 }
 
-/**
- * @brief Đọc thông tin items từ file vào mảng
- * @param p Mảng items đầu ra
- * @return Số lượng items đọc được, -1 nếu lỗi
- */
+// Đọc danh sách mặt hàng từ file vào mảng
 int getInfo(Item* p) {
     ifstream myFile("data/Item/Item.txt");
     if (!myFile.is_open()) {
-        return -1; // Lỗi mở file
+        return -1;
     }
     
     int total = 0;
     string ma, ten, line;
     int price;
 
-    // Đọc từng dòng: mã, tên, giá và sử dụng setters để gán giá trị
     while (getline(myFile, ma) && 
            getline(myFile, ten) && 
            getline(myFile, line)) {
         stringstream geek(line);
-        geek >> price; // Chuyển string sang int
+        geek >> price;
         
-        // Sử dụng Setters
         p[total].setmaItem(ma);
         p[total].setTenItem(ten);
         p[total].setPrice(price);
 
         total++;
-        if (total >= 1000) break; // Bảo vệ khỏi tràn mảng
+        if (total >= 1000) break;
     }
     myFile.close();
     return total;
 }
 
-/**
- * @brief Đọc items vào vector (an toàn hơn)
- * @param items Vector kết quả
- * @return true nếu thành công, false nếu thất bại
- */
+// Tải toàn bộ mặt hàng vào vector
 bool loadAllItems(vector<Item> &items) {
     ifstream myFile("data/Item/Item.txt");
     if (!myFile.is_open()) {
-        return false; // Lỗi mở file
+        return false;
     }
     
-    items.clear(); // Xóa vector cũ
+    items.clear();
     string ma, ten, line;
     int price;
     
-    // Đọc từng bộ 3 dòng: mã, tên, giá
     while (getline(myFile, ma) && 
            getline(myFile, ten) && 
            getline(myFile, line)) {
@@ -159,124 +134,96 @@ bool loadAllItems(vector<Item> &items) {
         stringstream geek(line);
         geek >> price;
         
-        // Sử dụng Setters
         temp.setmaItem(ma);
         temp.setTenItem(ten);
         temp.setPrice(price);
 
-        items.push_back(temp); // Thêm vào vector
+        items.push_back(temp);
     }
     myFile.close();
     return true;
 }
 
-/**
- * @brief Hiển thị item theo mã
- * @param p Mảng items
- * @param x Mã cần tìm
- * @return true nếu tìm thấy, false nếu không
- */
+// Hiển thị mặt hàng theo mã
 bool displayItemByCode(Item* p, string x) {
     int total = getInfo(p);
-    if (total <= 0) return false; // Không có items hoặc lỗi
+    if (total <= 0) return false;
     
     for (int i = 0; i < total; i++) {
-        if (x == p[i].getmaItem()) { // Đã sửa: dùng getmaItem()
-            // Hiển thị thông tin item, dùng getters
+        if (x == p[i].getmaItem()) {
             cout << "MaMH: " << p[i].getmaItem() << endl;
             cout << "Ten mon: " << p[i].getTenItem() << endl;
             cout << "Gia: " << p[i].getprice() << endl;
-            return true; // Đã tìm thấy và hiển thị
+            return true;
         }
     }
-    return false; // Không tìm thấy
+    return false;
 }
 
-/**
- * @brief Hiển thị tất cả items
- * @param p Mảng items
- * @return true nếu thành công, false nếu thất bại
- */
+// Hiển thị toàn bộ mặt hàng ra console
 bool displayAllItems(Item* p) {
     int total = getInfo(p);
-    if (total <= 0) return false; // Không có items hoặc lỗi
+    if (total <= 0) return false;
     
     cout << "DANH SACH TAT CA MAT HANG:" << endl;
     cout << "--------------------------" << endl;
     for (int i = 0; i < total; i++) {
-        // Hiển thị từng item, dùng getters
         cout << "STT " << (i+1) << ": " 
-             << p[i].getmaItem() << " | " // Đã sửa: dùng getmaItem()
-             << p[i].getTenItem() << " | " // Đã sửa: dùng getTenItem()
-             << p[i].getprice() << " VND" << endl; // Đã sửa: dùng getprice()
+             << p[i].getmaItem() << " | "
+             << p[i].getTenItem() << " | "
+             << p[i].getprice() << " VND" << endl;
     }
     cout << "--------------------------" << endl;
     cout << "Tong cong: " << total << " mat hang" << endl;
     return true;
 }
 
-/**
- * @brief Thêm item mới
- * @param p Mảng items
- * @return true nếu thành công, false nếu thất bại
- */
+// Thêm mặt hàng mới (ghi file)
 bool addItem(Item* p) {
     Item x;
-    cin >> x; // Nhập thông tin item mới
+    cin >> x;
     
     ofstream file2("data/Item/Item.txt", ios::app);
     if (!file2.is_open()) {
-        return false; // Lỗi mở file
+        return false;
     }
     
-    file2 << x; // Ghi item mới vào file (sử dụng operator<< đã được friend)
+    file2 << x;
     file2.close();
     return true;
 }
 
-/**
- * @brief Kiểm tra mã item có tồn tại không
- * @param p Mảng items
- * @param ma Mã cần kiểm tra
- * @return true nếu tồn tại, false nếu không
- */
+// Kiểm tra mã mặt hàng có tồn tại
 bool check_maItem(Item *p, string ma) {
     int total = getInfo(p);
-    if (total <= 0) return false; // Không có items
+    if (total <= 0) return false;
     
     for (int i = 0; i < total; i++) {
-        if (ma == p[i].getmaItem()) { // Đã sửa: dùng getmaItem()
-            return true; // Tìm thấy mã
+        if (ma == p[i].getmaItem()) {
+            return true;
         }
     }
-    return false; // Không tìm thấy mã
+    return false;
 }
 
-/**
- * @brief Xóa item khỏi hệ thống
- * @param p Mảng items
- * @return true nếu thành công, false nếu thất bại
- */
+// Xóa mặt hàng theo mã từ file
 bool deleteItem(Item *p) {
     string x;
     cout << "Nhap ma mat hang muon xoa: ";
     cin >> x;
-    cin.ignore(); // Xóa bộ đệm
+    cin.ignore();
     
-    // Kiểm tra mã có tồn tại không
     if (!check_maItem(p, x)) {
         cout << "Ma mat hang khong ton tai!" << endl;
         return false;
     }
     
-    // Mở file gốc để đọc
     ifstream is("data/Item/Item.txt");
     if (!is.is_open()) {
         cout << "Khong the mo file!" << endl;
         return false;
     }
     
-    // Tạo file tạm để ghi
     ofstream file2("data/temp.txt");
     if (!file2.is_open()) {
         is.close();
@@ -287,12 +234,11 @@ bool deleteItem(Item *p) {
     int n = getInfo(p);
     bool found = false;
     
-    // Ghi tất cả items trừ item cần xóa
     for (int j = 0; j < n; j++) {
-        if (p[j].getmaItem() != x) { // Đã sửa: dùng getmaItem()
-            file2 << p[j]; // Ghi item không bị xóa
+        if (p[j].getmaItem() != x) {
+            file2 << p[j];
         } else {
-            found = true; // Đánh dấu đã tìm thấy item cần xóa
+            found = true;
         }
     }
     
@@ -300,40 +246,30 @@ bool deleteItem(Item *p) {
     is.close();
     
     if (found) {
-        // Thay thế file cũ bằng file tạm
         remove("data/Item/Item.txt");
         rename("data/temp.txt", "data/Item/Item.txt");
         cout << "Xoa mat hang thanh cong!" << endl;
         return true;
     } else {
-        remove("data/temp.txt"); // Xóa file tạm nếu không tìm thấy
+        remove("data/temp.txt");
         cout << "Khong tim thay mat hang de xoa!" << endl;
         return false;
     }
 }
 
-/**
- * @brief Cập nhật thông tin item
- * @param p Mảng items
- * @param ma Mã item cần cập nhật
- * @param newItem Thông tin mới
- * @return true nếu thành công, false nếu thất bại
- */
+// Cập nhật mặt hàng theo mã
 bool updateItem(Item *p, string ma, const Item &newItem) {
-    // Kiểm tra mã có tồn tại không
     if (!check_maItem(p, ma)) {
         cout << "Ma mat hang khong ton tai!" << endl;
         return false;
     }
     
-    // Mở file gốc để đọc
     ifstream is("data/Item/Item.txt");
     if (!is.is_open()) {
         cout << "Khong the mo file!" << endl;
         return false;
     }
     
-    // Tạo file tạm để ghi
     ofstream file2("temp.txt");
     if (!file2.is_open()) {
         is.close();
@@ -344,13 +280,12 @@ bool updateItem(Item *p, string ma, const Item &newItem) {
     int n = getInfo(p);
     bool updated = false;
     
-    // Ghi tất cả items, thay thế item cần cập nhật
     for (int j = 0; j < n; j++) {
-        if (p[j].getmaItem() == ma) { // Đã sửa: dùng getmaItem()
-            file2 << newItem; // Ghi thông tin mới
+        if (p[j].getmaItem() == ma) {
+            file2 << newItem;
             updated = true;
         } else {
-            file2 << p[j]; // Giữ nguyên item khác
+            file2 << p[j];
         }
     }
     
@@ -358,47 +293,35 @@ bool updateItem(Item *p, string ma, const Item &newItem) {
     is.close();
     
     if (updated) {
-        // Thay thế file cũ bằng file tạm
         remove("data/Item/Item.txt");
         rename("data/temp.txt", "data/Item/Item.txt");
         cout << "Cap nhat mat hang thanh cong!" << endl;
         return true;
     } else {
-        remove("data/temp.txt"); // Xóa file tạm nếu không cập nhật
+        remove("data/temp.txt");
         cout << "Khong the cap nhat mat hang!" << endl;
         return false;
     }
 }
 
-/**
- * @brief Tìm kiếm items theo tên
- * @param p Mảng items
- * @param name Tên cần tìm
- * @param results Mảng kết quả
- * @return Số lượng items tìm thấy
- */
+// Tìm kiếm mặt hàng theo tên, trả về số lượng kết quả
 int searchItemsByName(Item* p, string name, Item* results) {
     int total = getInfo(p);
     int count = 0;
     
-    // Duyệt và tìm kiếm theo tên
     for (int i = 0; i < total && count < 1000; i++) {
-        // Đã sửa: dùng getTenItem()
         if (p[i].getTenItem().find(name) != string::npos) { 
-            results[count++] = p[i]; // Thêm vào kết quả
+            results[count++] = p[i];
         }
     }
-    return count; // Trả về số lượng tìm thấy
+    return count;
 }
 
-/**
- * @brief Đếm tổng số items
- * @return Số lượng items, -1 nếu lỗi
- */
+// Đếm tổng số mặt hàng
 int countItems() {
     vector<Item> items;
     if (loadAllItems(items)) {
-        return items.size(); // Trả về kích thước vector
+        return items.size();
     }
-    return -1; // Lỗi đọc file
+    return -1;
 }

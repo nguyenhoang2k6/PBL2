@@ -17,7 +17,6 @@ private:
     Button* button_doimk;
     Button* button_back;
 
-
 public:
     AdminDashBoard(App* app);
     ~AdminDashBoard();

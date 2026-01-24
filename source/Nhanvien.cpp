@@ -1,24 +1,22 @@
 #include <app/Nhanvien.h>
-#include <cstdio> // Cho hàm remove, rename
+#include <cstdio>
 
-// Constructor mặc định
+// Khởi tạo nhân viên mặc định
 NhanVien::NhanVien() : tuoi(0) {}
 
-// Constructor đầy đủ
+// Khởi tạo nhân viên với đầy đủ thông tin
 NhanVien::NhanVien(std::string ma, std::string t, std::string cv, int age, std::string dc, std::string phone)
     : maNV(ma), ten(t), chucVu(cv), tuoi(age), diaChi(dc), sdt(phone) {}
 
-// --- HÀM 1: LẤY TOÀN BỘ DỮ LIỆU ---
+// Lấy danh sách toàn bộ nhân viên từ file
 std::vector<NhanVien> NhanVien::getAll() {
     std::vector<NhanVien> list;
-    // Đảm bảo đường dẫn file đúng (ví dụ: data/nhanvien.txt)
     std::ifstream file("data/Nhanvien/Nhanvien.txt"); 
     
-    if (!file.is_open()) return list; // Trả về rỗng nếu lỗi
+    if (!file.is_open()) return list;
 
     std::string ma, t, cv, dc, phone, ageStr;
     
-    // Giả sử định dạng file: Mỗi thuộc tính 1 dòng
     while (std::getline(file, ma)) {
         if (ma.empty()) continue; 
 
@@ -31,7 +29,6 @@ std::vector<NhanVien> NhanVien::getAll() {
         int age = 0;
         try { age = std::stoi(ageStr); } catch (...) {}
 
-        // Thêm vào danh sách
         list.push_back(NhanVien(ma, t, cv, age, dc, phone));
     }
     
@@ -39,7 +36,7 @@ std::vector<NhanVien> NhanVien::getAll() {
     return list;
 }
 
-// --- HÀM 2: KIỂM TRA TỒN TẠI ---
+// Kiểm tra mã nhân viên đã tồn tại
 bool NhanVien::exists(const std::string& maCheck) {
     std::vector<NhanVien> list = getAll();
     for (const auto& nv : list) {
@@ -48,11 +45,10 @@ bool NhanVien::exists(const std::string& maCheck) {
     return false;
 }
 
-// --- HÀM 3: THÊM NHÂN VIÊN ---
+// Thêm nhân viên và ghi mật khẩu
 bool NhanVien::add(const NhanVien& nv, const std::string& password) {
-    if (exists(nv.getMaNV())) return false; // Mã đã tồn tại, không thêm
+    if (exists(nv.getMaNV())) return false;
 
-    // 1. Ghi vào file Nhanvien.txt (Append - Ghi nối tiếp)
     std::ofstream fileNV("data/Nhanvien/Nhanvien.txt", std::ios::app);
     if (!fileNV.is_open()) return false;
 
@@ -64,7 +60,6 @@ bool NhanVien::add(const NhanVien& nv, const std::string& password) {
            << nv.getSDT() << "\n";
     fileNV.close();
 
-    // 2. Ghi vào file mật khẩu (nếu cần)
     std::ofstream filePass("data/Password/staff.txt", std::ios::app);
     if (filePass.is_open()) {
         filePass << nv.getMaNV() << " " << password << "\n";
@@ -74,20 +69,19 @@ bool NhanVien::add(const NhanVien& nv, const std::string& password) {
     return true;
 }
 
-// --- HÀM 4: XÓA NHÂN VIÊN ---
+// Xóa nhân viên theo mã
 bool NhanVien::remove(const std::string& maDel) {
-    std::vector<NhanVien> list = getAll(); // Lấy tất cả ra RAM
+    std::vector<NhanVien> list = getAll();
     bool found = false;
 
-    std::ofstream file("data/Nhanvien/temp.txt"); // Ghi vào file tạm
+    std::ofstream file("data/Nhanvien/temp.txt");
     if (!file.is_open()) return false;
 
     for (const auto& nv : list) {
         if (nv.getMaNV() == maDel) {
             found = true; 
-            continue; // Bỏ qua người này (không ghi lại -> coi như xóa)
+            continue;
         }
-        // Ghi lại người khác
         file << nv.getMaNV() << "\n"
              << nv.getTen() << "\n"
              << nv.getChucVu() << "\n"
@@ -97,11 +91,8 @@ bool NhanVien::remove(const std::string& maDel) {
     }
     file.close();
 
-    // Xóa file cũ, đổi tên file tạm thành file chính
     std::remove("data/Nhanvien/Nhanvien.txt");
     std::rename("data/Nhanvien/temp.txt", "data/Nhanvien/Nhanvien.txt");
-
-    // (Bạn nên làm tương tự cho file Password nếu muốn xóa sạch sẽ)
 
     return found;
 }

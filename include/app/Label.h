@@ -21,7 +21,7 @@ public:
     void setText(const string& newText);
     void setColor(const SDL_Color& newColor) {
         textColor = newColor;
-        setText(text); // Re-render texture with new color
+        setText(text);
     }
     void setPosition(float x, float y) {
         this->x = x;
@@ -29,4 +29,3 @@ public:
     }
     void render(SDL_Renderer* renderer) const;
 };
-

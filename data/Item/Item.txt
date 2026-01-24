@@ -16,3 +16,9 @@ Tra sua
 MH010
 Tra sua chan trau
 24000
+MH001
+Cà phê đen
+18000
+MH002
+Ca phe sua
+20000

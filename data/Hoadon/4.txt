@@ -1,5 +1,10 @@
-Ngay thu ngan: 20/9/2025
-Nhan vien thu ngan: NV001
-Ten mon                       So luong  Thanh tien
-Sg Cafe Milk                        2         44000     
-Tong gia tien: 44000
+Ngay thu ngan: 10/12/2025
+Nhan vien thu ngan: NV012
+Ten mon                       So luong  Don gia   Thanh tien
+---------------------------------------------------------------
+Macchiato                     1         24000     24000     
+Tra sua                       1         20000     20000     
+Espresso                      1         22000     22000     
+Cà phê đen                 2         18000     36000     
+---------------------------------------------------------------
+Tong gia tien: 102000

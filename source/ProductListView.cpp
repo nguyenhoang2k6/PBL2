@@ -3,10 +3,10 @@
 #include <filesystem>
 #include <algorithm>
 
+// Tải danh sách sản phẩm từ file và hiển thị
 void ProductListView::loadFromFile(SDL_Renderer* renderer, const std::string& filepath) {
     std::vector<Item> items;
 
-    // Store the path so removeItem can reuse it
     dataFilePath = filepath;
 
     std::ifstream fin(filepath);
@@ -17,7 +17,7 @@ void ProductListView::loadFromFile(SDL_Renderer* renderer, const std::string& fi
 
     std::string code, name, priceLine;
     while (std::getline(fin, code)) {
-        if (code.size() == 0) continue; // skip empty lines
+        if (code.size() == 0) continue;
 
         if (!std::getline(fin, name)) break;
         if (!std::getline(fin, priceLine)) break;
@@ -37,10 +37,8 @@ void ProductListView::loadFromFile(SDL_Renderer* renderer, const std::string& fi
 
     fin.close();
 
-    // Sync to create Itemrow objects (ProductListView::syncWithData expects app to be set)
     syncWithData(renderer, items);
 
-    // Create header labels if not exist (use smaller font)
     if (app) {
         if (!hdrCode) hdrCode = new Label("Mã SP", COLOR_BLACK, startX + 10.0f, startY - headerHeight + 10.0f, app->getFont2(), renderer);
         if (!hdrName) hdrName = new Label("Tên", COLOR_BLACK, startX + 200.0f, startY - headerHeight + 10.0f, app->getFont2(), renderer);
@@ -48,13 +46,13 @@ void ProductListView::loadFromFile(SDL_Renderer* renderer, const std::string& fi
     }
 }
 
+// Xóa sản phẩm theo mã và cập nhật file
 bool ProductListView::removeItem(const std::string& code, SDL_Renderer* renderer) {
     if (dataFilePath.empty()) {
         std::cerr << "Data file path not set. Call loadFromFile first." << std::endl;
         return false;
     }
 
-    // Read all items
     std::vector<Item> items;
     std::ifstream fin(dataFilePath);
     if (!fin.is_open()) {
@@ -76,7 +74,6 @@ bool ProductListView::removeItem(const std::string& code, SDL_Renderer* renderer
     }
     fin.close();
 
-    // Filter out the code
     auto origCount = items.size();
     items.erase(std::remove_if(items.begin(), items.end(), [&](const Item &it){ return it.getmaItem() == code; }), items.end());
     if (items.size() == origCount) {
@@ -84,7 +81,6 @@ bool ProductListView::removeItem(const std::string& code, SDL_Renderer* renderer
         return false;
     }
 
-    // Backup original file by copying contents to <filename>.bak
     try {
         std::string bakPath = dataFilePath + ".bak";
         std::ifstream in(dataFilePath, std::ios::binary);
@@ -92,7 +88,6 @@ bool ProductListView::removeItem(const std::string& code, SDL_Renderer* renderer
         if (in.is_open() && out.is_open()) {
             out << in.rdbuf();
         }
-        // streams closed by destructor
     } catch (...) {
         std::cerr << "Backup failed for: " << dataFilePath << std::endl;
     }
@@ -111,7 +106,6 @@ bool ProductListView::removeItem(const std::string& code, SDL_Renderer* renderer
     }
     fout.close();
 
-    // Reload view with updated items
     syncWithData(renderer, items);
     return true;
 }

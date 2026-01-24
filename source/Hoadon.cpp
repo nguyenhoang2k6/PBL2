@@ -2,7 +2,6 @@
 #include "app/Hoadon.h"
 #include "app/Item.h"
 #include "app/Nhanvien.h"
-// #include "app/Thongke.h" // Bỏ bớt nếu chưa dùng
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -11,13 +10,14 @@
 
 using namespace std;
 
-// --- CÁC HÀM TIỆN ÍCH GIỮ NGUYÊN ---
+// Đổi màu chữ console (Windows)
 void TextColor5(int x) {
     HANDLE mau;
     mau = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(mau, x);
 }
 
+// Đọc nội dung file và in ra console
 void read(const string &x) {
     ifstream in;
     in.open(x);
@@ -29,6 +29,7 @@ void read(const string &x) {
     in.close();
 }
 
+// Kiểm tra file hóa đơn đã tồn tại
 bool check_exist(const string &x) {
     ifstream in;
     in.open("data/Hoadon/" + x + ".txt");
@@ -39,22 +40,21 @@ bool check_exist(const string &x) {
     return false;
 }
 
-// --- CONSTRUCTOR & DESTRUCTOR ---
+// Khởi tạo hóa đơn
 Hoadon::Hoadon() {
     Menu = new Item[MAX];
     soluong = new int[MAX];
-    total = 0; // Số lượng loại món ăn (Item count)
-    price = 0; // Tổng tiền
+    total = 0;
+    price = 0;
 }
 
+// Giải phóng bộ nhớ động
 Hoadon::~Hoadon() {
     if (Menu) delete[] Menu;
     if (soluong) delete[] soluong;
 }
 
-// --- NHÓM HÀM LOGIC QUAN TRỌNG CHO GIAO DIỆN ---
-
-// 1. Hàm nhận thông tin từ các TextBox (Mã HĐ, Ngày,...)
+// Thiết lập thông tin chung hóa đơn
 void Hoadon::setThongTinChung(string mHD, string mNV, int d, int m, int y) {
     this->maHD = mHD;
     this->maNV = mNV;
@@ -63,9 +63,8 @@ void Hoadon::setThongTinChung(string mHD, string mNV, int d, int m, int y) {
     this->year = y;
 }
 
-// 2. Hàm xử lý khi nhấn vào một món ăn (hoặc nút Thêm)
+// Thêm vật phẩm vào hóa đơn
 void Hoadon::themVatPham(const Item &itemMoi, int sl_them) {
-    // Kiểm tra xem món này đã có trong danh sách chưa
     int index = -1;
     for (int i = 0; i < total; i++) {
         if (Menu[i].getmaItem() == itemMoi.getmaItem()) {
@@ -75,14 +74,12 @@ void Hoadon::themVatPham(const Item &itemMoi, int sl_them) {
     }
 
     if (index != -1) {
-        // Nếu đã có -> Cộng dồn số lượng
         soluong[index] += sl_them;
     } else {
-        // Nếu chưa có -> Thêm dòng mới
         if (total < MAX) {
-            Menu[total] = itemMoi; // Copy item vào mảng
+            Menu[total] = itemMoi;
             soluong[total] = sl_them;
-            total++; // Tăng số đếm loại món
+            total++;
         } else {
             TextColor5(12);
             cout << "Hoa don da day, khong the them!" << endl;
@@ -90,14 +87,12 @@ void Hoadon::themVatPham(const Item &itemMoi, int sl_them) {
         }
     }
 
-    // Luôn tính lại tổng tiền sau khi thay đổi
     tinhTongTien();
 }
 
-// 3. Hàm xử lý khi nhấn nút Xóa một dòng
+// Xóa vật phẩm theo mã
 void Hoadon::xoaVatPham(const string &maItemCanXoa) {
     int index = -1;
-    // Tìm vị trí món cần xóa
     for (int i = 0; i < total; i++) {
         if (Menu[i].getmaItem() == maItemCanXoa) {
             index = i;
@@ -105,18 +100,17 @@ void Hoadon::xoaVatPham(const string &maItemCanXoa) {
         }
     }
 
-    // Nếu tìm thấy -> Xóa và dồn mảng
     if (index != -1) {
         for (int i = index; i < total - 1; i++) {
             Menu[i] = Menu[i + 1];
             soluong[i] = soluong[i + 1];
         }
-        total--; // Giảm số lượng loại món
+        total--;
         tinhTongTien();
     }
 }
 
-// 4. Hàm tính tổng tiền tự động
+// Tính tổng tiền của hóa đơn
 void Hoadon::tinhTongTien() {
     price = 0;
     for (int i = 0; i < total; i++) {
@@ -124,17 +118,15 @@ void Hoadon::tinhTongTien() {
     }
 }
 
-// 5. Hàm Lưu hóa đơn (Gọi khi nhấn nút Thanh toán/Lưu)
+// Lưu hóa đơn vào file và ghi log
 bool Hoadon::luuHoadonVaoFile() {
-    // Kiểm tra trùng mã
     if (check_exist(maHD)) {
         return false; 
     }
 
-    // Lưu chi tiết hóa đơn
-    ofstream file("data/Hoadon/" + maHD + ".txt"); // Chú ý đường dẫn
+    ofstream file("data/Hoadon/" + maHD + ".txt");
     if (!file) return false;
-    file << (*this); // Dùng lại operator<< đã viết
+    file << (*this);
     file.close();
 
     // Lưu lịch sử (Log)
@@ -148,7 +140,7 @@ bool Hoadon::luuHoadonVaoFile() {
     return true;
 }
 
-// --- GIỮ NGUYÊN OPERATOR<< ĐỂ IN RA FILE ---
+// Xuất hóa đơn ra luồng
 ostream& operator<<(ostream& out, const Hoadon &p) {
     out << "Ngay thu ngan: " << p.day << "/" << p.month << "/" << p.year << endl;
     out << "Nhan vien thu ngan: " << p.maNV << endl;
@@ -168,9 +160,8 @@ ostream& operator<<(ostream& out, const Hoadon &p) {
     return out;
 }
 
-// --- MÔ PHỎNG CÁCH GIAO DIỆN SỬ DỤNG CLASS NÀY (Hàm Cashier cũ) ---
+// Mô phỏng giao diện thu ngân (console)
 int Cashier(Hoadon &p, const string &maNV) {
-    // 1. Giả lập việc nhập từ TextBox ngày tháng, mã HĐ
     string tempMaHD;
     int d, m, y;
     
@@ -178,13 +169,11 @@ int Cashier(Hoadon &p, const string &maNV) {
     cout << "Nhap Ngay (d m y): "; cin >> d >> m >> y;
     cout << "Nhap Ma HD: "; cin >> tempMaHD;
 
-    // Gọi hàm set thông tin (Logic UI -> Class)
     p.setThongTinChung(tempMaHD, maNV, d, m, y);
 
     bool running = true;
     while (running) {
         system("cls");
-        // Hiển thị hóa đơn hiện tại (Giống như vẽ GridView/ListBox)
         cout << "=== HOA DON HIEN TAI (Update Realtime) ===\n";
         cout << p; 
         cout << "\n==========================================\n";
@@ -197,27 +186,18 @@ int Cashier(Hoadon &p, const string &maNV) {
         int choice; cin >> choice;
 
         if (choice == 1) {
-            // Giả lập lấy item từ Database/List món ăn
             Item itemTest; 
-            // Ở GUI thật, bạn sẽ lấy Item từ đối tượng nút bấm
-            // Ở đây mình nhập tạm để test logic
             string id, name; int pr;
             cout << "Nhap ID mon: "; cin >> id;
             cout << "Nhap Ten mon: "; cin.ignore(); getline(cin, name);
             cout << "Nhap Gia: "; cin >> pr;
             
-            // Item(ma, ten, gia, ...) -> Tùy constructor của class Item
-            // Giả sử Item có method set hoặc constructor tương ứng
-            // itemTest.setAll(id, name, pr...); <--- Bạn tự điền theo class Item của bạn
-            
-            // GỌI HÀM LOGIC:
-            p.themVatPham(itemTest, 1); // Thêm 1 món
+            p.themVatPham(itemTest, 1);
 
         } else if (choice == 2) {
             string idXoa;
             cout << "Nhap ID mon can xoa: "; cin >> idXoa;
             
-            // GỌI HÀM LOGIC:
             p.xoaVatPham(idXoa);
             
         } else if (choice == 3) {
@@ -233,21 +213,20 @@ int Cashier(Hoadon &p, const string &maNV) {
     return p.price;
 }
 
-// Trả về số lượng loại món (biến total trong private)
+// Lấy số lượng mặt hàng trong hóa đơn
 int Hoadon::getSoLuongMatHang() const {
     return total;
 }
 
-// Trả về đối tượng Item tại vị trí index
+// Lấy Item ở vị trí index
 Item Hoadon::getItemAt(int index) const {
     if (index >= 0 && index < total) {
         return Menu[index];
     }
-    // Trả về item rỗng nếu index sai (đề phòng lỗi)
     return Item(); 
 }
 
-// Trả về số lượng tại vị trí index
+// Lấy số lượng của mặt hàng ở vị trí index
 int Hoadon::getSoLuongAt(int index) const {
     if (index >= 0 && index < total) {
         return soluong[index];
@@ -255,12 +234,10 @@ int Hoadon::getSoLuongAt(int index) const {
     return 0;
 }
 
-// Trả về tổng tiền
 long long Hoadon::getTongTien() const {
     return price;
 }
 
-// Giảm số lượng vật phẩm (nếu tồn tại). Nếu số lượng sau giảm <= 0 thì xóa dòng hoàn toàn.
 void Hoadon::giamVatPham(const string &maItem, int sl_giam) {
     int index = -1;
     for (int i = 0; i < total; i++) {
@@ -270,12 +247,10 @@ void Hoadon::giamVatPham(const string &maItem, int sl_giam) {
         }
     }
 
-    if (index == -1) return; // không có trong hóa đơn
+    if (index == -1) return;
 
-    // giảm số lượng
     soluong[index] -= sl_giam;
     if (soluong[index] <= 0) {
-        // xóa dòng và dồn mảng
         for (int i = index; i < total - 1; i++) {
             Menu[i] = Menu[i + 1];
             soluong[i] = soluong[i + 1];
@@ -283,6 +258,5 @@ void Hoadon::giamVatPham(const string &maItem, int sl_giam) {
         total--;
     }
 
-    // luôn cập nhật lại tổng tiền
     tinhTongTien();
 }

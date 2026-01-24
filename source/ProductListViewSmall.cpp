@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 
+// Tải danh sách sản phẩm (bản nhỏ) từ file
 void ProductListViewSmall::loadFromFile(SDL_Renderer* renderer, const std::string& filepath) {
     std::vector<Item> items;
     dataFilePath = filepath;
@@ -27,9 +28,9 @@ void ProductListViewSmall::loadFromFile(SDL_Renderer* renderer, const std::strin
 
     syncWithData(renderer, items);
 
-    // No header labels created here for compact view (rendered elsewhere or omitted)
 }
 
+// Xóa sản phẩm theo mã và cập nhật file (bản nhỏ)
 bool ProductListViewSmall::removeItem(const std::string& code, SDL_Renderer* renderer) {
     if (dataFilePath.empty()) {
         std::cerr << "Data file path not set. Call loadFromFile first." << std::endl;

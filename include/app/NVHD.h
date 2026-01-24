@@ -21,14 +21,12 @@ private:
     Button* button_submit;
     Button* button_back;
     Hoadon* hoadon;
-    // Product list for adding items to invoice (compact)
     ProductListViewSmall* productList;
     InvoiceListView* invoiceListUI;
-    // Notification label and timer for save feedback
     Label* notificationLabel;
     float notificationTimer;
-    float notificationDuration; // how long to show notification before auto-reset
-    bool notificationPersist; // if true, stays until next save attempt
+    float notificationDuration;
+    bool notificationPersist;
     // Render the invoice items list (name, quantity, price)
     void renderHoaDon(SDL_Renderer* renderer);
 

@@ -5,6 +5,7 @@
 #include <app/TextBox.h>
 #include <app/Color.h>
 
+// Khởi tạo màn hình bảng điều khiển quản trị
 AdminDashBoard::AdminDashBoard(App* app) :Screen(app) {
     label_title = nullptr;
     button_nv = nullptr;
@@ -13,6 +14,7 @@ AdminDashBoard::AdminDashBoard(App* app) :Screen(app) {
     button_doimk = nullptr;
     button_back = nullptr;
 }
+// Khởi tạo các nút điều hướng trên dashboard
 bool AdminDashBoard::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -31,7 +33,6 @@ bool AdminDashBoard::Init() {
     button_doimk = new Button(1512.0f, 875.0f, 500.0f, 175.0f, COLOR_UI_GREEN, "Đổi Mật Khẩu", renderer, font2, COLOR_WHITE);
     button_back = new Button(1116.0f, 1200.0f, 500.0f, 175.0f, COLOR_UI_RED, "Đăng Xuất", renderer, font2, COLOR_WHITE);
 
-
     if (!label_title ||!button_nv ||!button_item ||!button_thongke ||!button_doimk ||!button_back) {
         std::cerr << "Tạo UI thất bại!" << std::endl;
         return false;
@@ -39,8 +40,7 @@ bool AdminDashBoard::Init() {
     return true;
 }
 
-
-
+// Giải phóng tài nguyên dashboard
 AdminDashBoard::~AdminDashBoard() {
     delete label_title;
     delete button_nv;
@@ -50,6 +50,7 @@ AdminDashBoard::~AdminDashBoard() {
     delete button_back;
 }
 
+// Xử lý sự kiện nút bấm và điều hướng
 void AdminDashBoard::handleEvent(const SDL_Event& e) {
     if(button_nv){button_nv->handleEvent(e);}
     if(button_item){button_item->handleEvent(e);}
@@ -74,6 +75,7 @@ void AdminDashBoard::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật trạng thái các nút
 void AdminDashBoard::update() {
     if(button_nv){button_nv->update();}
     if(button_item){button_item->update();}
@@ -82,6 +84,7 @@ void AdminDashBoard::update() {
     if(button_back){button_back->update();}
 }
 
+// Vẽ giao diện dashboard
 void AdminDashBoard::render(SDL_Renderer* renderer) {
     if(label_title){label_title->render(renderer);}
     if(button_nv){button_nv->render(renderer);}
@@ -91,10 +94,12 @@ void AdminDashBoard::render(SDL_Renderer* renderer) {
     if(button_back){button_back->render(renderer);}
 }
 
+// Xử lý khi vào màn hình dashboard
 void AdminDashBoard::onEnter() {
 
 }
 
+// Xử lý khi rời màn hình dashboard
 void AdminDashBoard::onExit() {
 
 }

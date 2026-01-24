@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cstring>
 
+// Khởi tạo ô nhập văn bản
 TextBox::TextBox(float x, float y, float w, float h, SDL_Color bgColor, SDL_Color textColor,App* app,TTF_Font* font,const string& placeholder, SDL_Color placeholderColor)
     : rect{x,y,w,h}, bgColor(bgColor),textColor(textColor),text(""), textTexture(nullptr), texW(0), texH(0), focused(false), app(app),renderer(app->getRenderer()),font(font), lastBlink(0), caretVisible(true),caretPos(0), placeholder(placeholder), placeholderColor(placeholderColor),placeholderTexture(nullptr),needsTextureUpdate(false), scrollOffset(0.0f) {
     if (font && !placeholder.empty()) {
@@ -13,6 +14,7 @@ TextBox::TextBox(float x, float y, float w, float h, SDL_Color bgColor, SDL_Colo
     }
 }
 
+// Giải phóng tài nguyên texture
 TextBox::~TextBox() {
     if(textTexture) {
         SDL_DestroyTexture(textTexture);
@@ -24,6 +26,7 @@ TextBox::~TextBox() {
     }
 }
 
+// Cập nhật texture khi nội dung thay đổi
 void TextBox::updateTexture() {
     if (textTexture) {
         SDL_DestroyTexture(textTexture);
@@ -43,6 +46,7 @@ void TextBox::updateTexture() {
     }
 }
 
+// Cập nhật nhấp nháy con trỏ và texture
 void TextBox::update() {
     if(focused) {
         Uint32 now = SDL_GetTicks();
@@ -60,6 +64,7 @@ void TextBox::update() {
     }
 }
 
+// Xử lý sự kiện chuột và bàn phím
 void TextBox::handleEvent(const SDL_Event& e) {
     if(e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
         int mx = e.button.x, my = e.button.y;
@@ -69,7 +74,6 @@ void TextBox::handleEvent(const SDL_Event& e) {
         focused = SDL_PointInRectFloat(&mousePoint, &rect);
 
         if (focused) {
-            // Khi click vào, đặt con trỏ về cuối dòng cho tiện (đơn giản hóa logic click)
             caretPos = (int)text.length(); 
             
             if (!wasFocused) {
@@ -88,20 +92,16 @@ void TextBox::handleEvent(const SDL_Event& e) {
         needsTextureUpdate = true;
     } else if (e.type == SDL_EVENT_KEY_DOWN) {
         if (e.key.key == SDLK_BACKSPACE && !text.empty() && caretPos > 0) {
-            // Xóa ký tự ĐỨNG TRƯỚC con trỏ
             text.erase(caretPos - 1, 1);
-            caretPos--; // Lùi con trỏ lại 1 bước
+            caretPos--;
             needsTextureUpdate = true;
         }
         else if (e.key.key == SDLK_LEFT) {
-            // Di chuyển con trỏ sang trái
             if (caretPos > 0) caretPos--;
-            // Reset blink để người dùng thấy con trỏ di chuyển ngay lập tức
             caretVisible = true; 
             lastBlink = SDL_GetTicks();
         }
         else if (e.key.key == SDLK_RIGHT) {
-            // Di chuyển con trỏ sang phải
             if (caretPos < (int)text.length()) caretPos++;
             caretVisible = true;
             lastBlink = SDL_GetTicks();
@@ -109,55 +109,43 @@ void TextBox::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Vẽ ô nhập và con trỏ
 void TextBox::render(SDL_Renderer* renderer) {
-    // 1. Vẽ nền (Luôn vẽ nền đầy đủ)
     SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
     SDL_RenderFillRect(renderer, &rect);
 
-    // 2. Tính toán vị trí con trỏ (Caret Position) theo pixel
     int caretPixelX = 0;
     int h = 0;
     if (font) {
         string beforeCaret = text.substr(0, caretPos);
-        // Dùng hàm đúng mà bạn đã tìm được (TTF_GetTextSize hoặc TTF_SizeText)
         TTF_Text* temptext = TTF_CreateText(0, font, beforeCaret.c_str(), beforeCaret.size());
         TTF_GetTextSize(temptext, &caretPixelX, &h);
-        // Giải phóng tài nguyên tạm thời
         TTF_DestroyText(temptext);
     }
 
-    // 3. LOGIC CUỘN (SCROLLING)
     float padding = 5.0f;
-    float visibleWidth = rect.w - (padding * 2); // Chiều rộng khả dụng
+    float visibleWidth = rect.w - (padding * 2);
     
-    // Nếu con trỏ đi quá mép phải -> Đẩy offset lên để đuổi theo con trỏ
     if (caretPixelX - scrollOffset > visibleWidth) {
         scrollOffset = caretPixelX - visibleWidth;
     }
-    // Nếu con trỏ đi quá mép trái (khi xóa hoặc bấm mũi tên trái) -> Kéo offset về
     if (caretPixelX < scrollOffset) {
         scrollOffset = (float)caretPixelX;
     }
 
-    // Nếu văn bản ngắn hơn khung, reset về 0 để không bị hở bên trái
     if (texW < visibleWidth) {
         scrollOffset = 0;
     }
 
-    // 4. THIẾT LẬP VÙNG CẮT (CLIPPING)
-    // Chỉ cho phép vẽ bên trong hình chữ nhật của TextBox
-    // (Phải ép kiểu về int vì SDL_SetRenderClipRect dùng int)
     SDL_Rect clipRect = {
         (int)rect.x, (int)rect.y,
         (int)rect.w, (int)rect.h
     };
     SDL_SetRenderClipRect(renderer, &clipRect);
 
-    // 5. Vẽ Chữ
     float textY = rect.y + (rect.h - (texH > 0 ? texH : TTF_GetFontHeight(font))) / 2.0f;
 
     if(text.empty()) {
-        // Vẽ Placeholder (Không cuộn)
         if (placeholderTexture) {
             float phW, phH;
             SDL_GetTextureSize(placeholderTexture, &phW, &phH);
@@ -166,10 +154,9 @@ void TextBox::render(SDL_Renderer* renderer) {
         }
     } 
     else {
-        // Vẽ Text thật (ÁP DỤNG scrollOffset)
         if (textTexture) {
             SDL_FRect dst = { 
-                rect.x + padding - scrollOffset, // Dịch chuyển X ngược lại
+                rect.x + padding - scrollOffset,
                 textY, 
                 (float)texW, (float)texH 
             };
@@ -177,11 +164,10 @@ void TextBox::render(SDL_Renderer* renderer) {
         }
     }
 
-    // 6. Vẽ Con Trỏ (Caret) - (ÁP DỤNG scrollOffset)
     if(focused && caretVisible) {
         float caretHeight = (float)TTF_GetFontHeight(font);
         SDL_FRect caretRect = { 
-            rect.x + padding + caretPixelX - scrollOffset,  // Vị trí X theo scroll
+            rect.x + padding + caretPixelX - scrollOffset,
             rect.y + (rect.h - caretHeight) / 2.0f, 
             2.0f, 
             caretHeight
@@ -191,6 +177,5 @@ void TextBox::render(SDL_Renderer* renderer) {
         SDL_RenderFillRect(renderer, &caretRect);
     }
 
-    // 7. QUAN TRỌNG: Hủy vùng cắt để không ảnh hưởng các phần vẽ sau
     SDL_SetRenderClipRect(renderer, nullptr);
 }

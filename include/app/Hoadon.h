@@ -13,11 +13,11 @@ private:
     int day, month, year;
     string maHD;
     string maNV;
-    Item *Menu;      // Mảng chứa các món
-    int *soluong;    // Mảng chứa số lượng tương ứng
+    Item *Menu;
+    int *soluong;
     
-    int total = 0;   // BIẾN ĐẾM: Số dòng sản phẩm hiện có trong hóa đơn (Item Count)
-    long long price = 0; // TỔNG TIỀN: Tổng giá trị hóa đơn
+    int total = 0;
+    long long price = 0;
 
 public:
     Hoadon();
@@ -27,9 +27,9 @@ public:
     void setThongTinChung(string mHD, string mNV, int d, int m, int y);
 
     // Nhóm hàm Logic (Dùng cho nút bấm Thêm/Xóa)
-    void themVatPham(const Item &item, int sl_them); // Logic nút Thêm
-    void xoaVatPham(const string &maItem);           // Logic nút Xóa
-    void tinhTongTien();                             // Hàm nội bộ tính lại tiền
+    void themVatPham(const Item &item, int sl_them);
+    void xoaVatPham(const string &maItem);
+    void tinhTongTien();
     // Giảm số lượng một mặt hàng trong hóa đơn. Nếu số lượng <= 0 thì xóa dòng.
     void giamVatPham(const string &maItem, int sl_giam);
 
@@ -41,7 +41,6 @@ public:
     // Lấy số lượng của món ăn tại dòng thứ i
     int getSoLuongAt(int index) const;
 
-    // Lấy tổng tiền hiện tại của hóa đơn
     long long getTongTien() const;
 
     // Hàm lưu file (Dùng cho nút Lưu/Thanh toán)
@@ -49,7 +48,7 @@ public:
 
     // Các hàm cũ (giữ lại để tương thích nếu cần)
     friend ostream& operator<<(ostream& out, const Hoadon &p);
-    friend int Cashier(Hoadon &p, const string &maNV); // Hàm này giờ chỉ để test console
+    friend int Cashier(Hoadon &p, const string &maNV);
     friend string display(const Hoadon &p);
 };
 

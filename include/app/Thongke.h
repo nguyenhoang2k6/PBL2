@@ -10,9 +10,9 @@
 // Struct đơn giản để chứa thông tin một dòng thống kê
 struct ThongKeItem {
     std::string maHD;
-    std::string ngay; // Định dạng "dd/mm/yyyy"
+    std::string ngay;
     int doanhThu;
-    std::string maNV; // Người lập
+    std::string maNV;
 };
 
 class ThongKe {
@@ -22,8 +22,6 @@ public:
     static bool isValidDate(int d, int m, int y);
     static int getDaysInMonth(int m, int y);
 
-    // --- CÁC HÀM THỐNG KÊ (Trả về danh sách hóa đơn) ---
-    
     // 1. Thống kê theo Ngày
     static std::vector<ThongKeItem> getByDay(int d, int m, int y);
 

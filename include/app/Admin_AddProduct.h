@@ -11,7 +11,6 @@ class TextBox;
 class Admin_AddProduct : public Screen
 {
 private:
-    // Labels
     Label* label_title;
     Label* label_productCode;
     Label* label_productName;
@@ -22,21 +21,17 @@ private:
     Label* label_success;
     Label* label_image;
 
-    // TextBoxes
     TextBox* textbox_code;
     TextBox* textbox_name;
     TextBox* textbox_price;
 
-    // Buttons
     Button* button_save;
     Button* button_back;
     Button* button_addImage;
 
-    // Image path for selected image
     std::string imagePath;
     SDL_Texture* imageTexture;
 
-    // Error flags
     bool errorCode;
     bool errorName;
     bool errorPrice;

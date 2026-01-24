@@ -1,5 +1,5 @@
 #include <app/Admin_AddEmploy.h>
-#include <app/App.h>        
+#include <app/App.h>
 #include <app/Button.h>
 #include <app/Label.h>
 #include <app/TextBox.h>
@@ -47,6 +47,7 @@ Admin_AddEmploy::Admin_AddEmploy(App* app) :Screen(app) {
     success = false;
 }
 
+// Khởi tạo UI thêm nhân viên
 bool Admin_AddEmploy::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -58,50 +59,40 @@ bool Admin_AddEmploy::Init() {
         return false;
     }
 
-    // Title
     label_title = new Label("Thêm Nhân Viên Mới", COLOR_WARNING, 950.0f, 80.0f, font3, renderer);
     
-    // Mã NV Label
     label_maNV = new Label("Mã NV:", COLOR_BLACK, 150.0f, 200.0f, font2, renderer);
     label_errorMaNV = new Label("Mã nhân viên không được để trống hoặc đã tồn tại!", COLOR_UI_RED, 150.0f, 300.0f, font1, renderer);
     
-    // Tên Label
     label_ten = new Label("Tên:", COLOR_BLACK, 150.0f, 360.0f, font2, renderer);
     label_errorTen = new Label("Tên không được để trống!", COLOR_UI_RED, 150.0f, 460.0f, font1, renderer);
     
-    // Chức Vụ Label
     label_chucVu = new Label("Chức Vụ:", COLOR_BLACK, 150.0f, 520.0f, font2, renderer);
     label_errorChucVu = new Label("Chức vụ không được để trống!", COLOR_UI_RED, 150.0f, 620.0f, font1, renderer);
     
-    // Tuổi Label
     label_tuoi = new Label("Tuổi:", COLOR_BLACK, 150.0f, 680.0f, font2, renderer);
     label_errorTuoi = new Label("Tuổi phải là số và từ 18 đến 100!", COLOR_UI_RED, 150.0f, 780.0f, font1, renderer);
     
-    // Địa Chỉ Label
-    label_diaChi = new Label("Địa Chỉ:", COLOR_BLACK, 1100.0f, 200.0f, font2, renderer);
-    label_errorDiaChi = new Label("Địa chỉ không được để trống!", COLOR_UI_RED, 1100.0f, 300.0f, font1, renderer);
+    label_diaChi = new Label("Địa Chỉ:", COLOR_BLACK, 1250.0f, 200.0f, font2, renderer);
+    label_errorDiaChi = new Label("Địa chỉ không được để trống!", COLOR_UI_RED, 1250.0f, 300.0f, font1, renderer);
     
-    // SDT Label
-    label_sdt = new Label("SDT:", COLOR_BLACK, 1100.0f, 360.0f, font2, renderer);
-    label_errorSDT = new Label("SDT phải là số và có 10 chữ số!", COLOR_UI_RED, 1100.0f, 460.0f, font1, renderer);
+    label_sdt = new Label("SDT:", COLOR_BLACK, 1250.0f, 360.0f, font2, renderer);
+    label_errorSDT = new Label("SDT phải là số và có 10 chữ số!", COLOR_UI_RED, 1250.0f, 460.0f, font1, renderer);
     
-    // Mật Khẩu Label
-    label_password = new Label("Mật Khẩu:", COLOR_BLACK, 1100.0f, 520.0f, font2, renderer);
-    label_errorPassword = new Label("Mật khẩu không được để trống!", COLOR_UI_RED, 1100.0f, 620.0f, font1, renderer);
+    label_password = new Label("Mật Khẩu:", COLOR_BLACK, 1250.0f, 520.0f, font2, renderer);
+    label_errorPassword = new Label("Mật khẩu không được để trống!", COLOR_UI_RED, 1250.0f, 620.0f, font1, renderer);
     
     label_success = new Label("Thêm nhân viên thành công!", COLOR_UI_GREEN, 800.0f, 850.0f, font2, renderer);
 
-    // TextBoxes
     textbox_maNV = new TextBox(600.0f, 220.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập mã NV", COLOR_GRAY_SILVER);
     textbox_ten = new TextBox(600.0f, 380.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập tên", COLOR_GRAY_SILVER);
     textbox_chucVu = new TextBox(600.0f, 540.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập chức vụ", COLOR_GRAY_SILVER);
     textbox_tuoi = new TextBox(600.0f, 700.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập tuổi", COLOR_GRAY_SILVER);
     
-    textbox_diaChi = new TextBox(1550.0f, 220.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập địa chỉ", COLOR_GRAY_SILVER);
-    textbox_sdt = new TextBox(1550.0f, 380.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập SDT", COLOR_GRAY_SILVER);
-    textbox_password = new TextBox(1550.0f, 540.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập mật khẩu", COLOR_GRAY_SILVER);
+    textbox_diaChi = new TextBox(1700.0f, 220.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập địa chỉ", COLOR_GRAY_SILVER);
+    textbox_sdt = new TextBox(1700.0f, 380.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập SDT", COLOR_GRAY_SILVER);
+    textbox_password = new TextBox(1700.0f, 540.0f, 400.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập mật khẩu", COLOR_GRAY_SILVER);
 
-    // Buttons
     button_save = new Button(700.0f, 900.0f, 300.0f, 80.0f, COLOR_UI_GREEN, "Lưu", renderer, font2, COLOR_WHITE);
     button_back = new Button(1150.0f, 900.0f, 300.0f, 80.0f, COLOR_UI_RED, "Quay Lại", renderer, font2, COLOR_WHITE);
 
@@ -115,6 +106,7 @@ bool Admin_AddEmploy::Init() {
     return true;
 }
 
+// Thu hồi tài nguyên UI
 Admin_AddEmploy::~Admin_AddEmploy() {
     delete label_title;
     delete label_maNV;
@@ -145,6 +137,7 @@ Admin_AddEmploy::~Admin_AddEmploy() {
     delete button_back;
 }
 
+// Xử lý sự kiện người dùng
 void Admin_AddEmploy::handleEvent(const SDL_Event& e) {
     if(textbox_maNV) textbox_maNV->handleEvent(e);
     if(textbox_ten) textbox_ten->handleEvent(e);
@@ -180,6 +173,7 @@ void Admin_AddEmploy::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật UI mỗi frame
 void Admin_AddEmploy::update() {
     if(textbox_maNV) textbox_maNV->update();
     if(textbox_ten) textbox_ten->update();
@@ -192,6 +186,7 @@ void Admin_AddEmploy::update() {
     if(button_back) button_back->update();
 }
 
+// Vẽ giao diện lên màn hình
 void Admin_AddEmploy::render(SDL_Renderer* renderer) {
     if(label_title) label_title->render(renderer);
     if(label_maNV) label_maNV->render(renderer);
@@ -239,6 +234,7 @@ void Admin_AddEmploy::render(SDL_Renderer* renderer) {
     }
 }
 
+// Reset form khi vào màn hình
 void Admin_AddEmploy::onEnter() {
     clearForm();
 }
@@ -246,6 +242,7 @@ void Admin_AddEmploy::onEnter() {
 void Admin_AddEmploy::onExit() {
 }
 
+// Kiểm tra dữ liệu đầu vào
 bool Admin_AddEmploy::validateInput() {
     std::string maNV = textbox_maNV->getText();
     std::string ten = textbox_ten->getText();
@@ -276,6 +273,7 @@ bool Admin_AddEmploy::validateInput() {
     return !errorMaNV && !errorTen && !errorChucVu && !errorTuoi && !errorDiaChi && !errorSDT && !errorPassword;
 }
 
+// Lưu nhân viên vào hệ thống
 bool Admin_AddEmploy::saveEmployee() {
     try {
         std::string maNV = textbox_maNV->getText();
@@ -293,6 +291,7 @@ bool Admin_AddEmploy::saveEmployee() {
     }
 }
 
+// Xóa dữ liệu trên form
 void Admin_AddEmploy::clearForm() {
     if (textbox_maNV) textbox_maNV->setText("");
     if (textbox_ten) textbox_ten->setText("");

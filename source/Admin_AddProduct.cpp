@@ -1,5 +1,5 @@
 #include <app/Admin_AddProduct.h>
-#include <app/App.h>        
+#include <app/App.h>
 #include <app/Button.h>
 #include <app/Label.h>
 #include <app/TextBox.h>
@@ -37,6 +37,7 @@ Admin_AddProduct::Admin_AddProduct(App* app) :Screen(app) {
     success = false;
 }
 
+// Khởi tạo UI thêm sản phẩm
 bool Admin_AddProduct::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -48,31 +49,24 @@ bool Admin_AddProduct::Init() {
         return false;
     }
 
-    // Title
     label_title = new Label("Thêm Sản Phẩm Mới", COLOR_WARNING, 950.0f, 80.0f, font3, renderer);
     
-    // Product Code Label
     label_productCode = new Label("Mã Sản Phẩm:", COLOR_BLACK, 200.0f, 220.0f, font2, renderer);
     label_errorCode = new Label("Mã sản phẩm không được để trống hoặc đã tồn tại!", COLOR_UI_RED, 200.0f, 330.0f, font1, renderer);
     
-    // Product Name Label
     label_productName = new Label("Tên Sản Phẩm:", COLOR_BLACK, 200.0f, 410.0f, font2, renderer);
     label_errorName = new Label("Tên sản phẩm không được để trống!", COLOR_UI_RED, 200.0f, 520.0f, font1, renderer);
     
-    // Price Label
     label_price = new Label("Giá Tiền:", COLOR_BLACK, 200.0f, 600.0f, font2, renderer);
     label_errorPrice = new Label("Giá tiền phải là số và lớn hơn 0!", COLOR_UI_RED, 200.0f, 710.0f, font1, renderer);
     
-    // Image Label
     label_image = new Label("Ảnh Sản Phẩm:", COLOR_BLACK, 1350.0f, 220.0f, font2, renderer);
     label_success = new Label("Thêm sản phẩm thành công!", COLOR_UI_GREEN, 900.0f, 1100.0f, font2, renderer);
 
-    // TextBoxes
     textbox_code = new TextBox(700.0f, 240.0f, 600.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập mã sản phẩm", COLOR_GRAY_SILVER);
     textbox_name = new TextBox(700.0f, 430.0f, 600.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập tên sản phẩm", COLOR_GRAY_SILVER);
     textbox_price = new TextBox(700.0f, 620.0f, 600.0f, 70.0f, COLOR_WHITE, COLOR_BLACK, app, font1, "Nhập giá tiền", COLOR_GRAY_SILVER);
 
-    // Buttons
     button_addImage = new Button(1350.0f, 650.0f, 600.0f, 70.0f, COLOR_UI_BLUE, "Chọn Ảnh", renderer, font1, COLOR_WHITE);
     button_save = new Button(800.0f, 1050.0f, 300.0f, 80.0f, COLOR_UI_GREEN, "Lưu", renderer, font2, COLOR_WHITE);
     button_back = new Button(1250.0f, 1050.0f, 300.0f, 80.0f, COLOR_UI_RED, "Quay Lại", renderer, font2, COLOR_WHITE);
@@ -87,6 +81,7 @@ bool Admin_AddProduct::Init() {
     return true;
 }
 
+// Hủy tài nguyên UI
 Admin_AddProduct::~Admin_AddProduct() {
     delete label_title;
     delete label_productCode;
@@ -110,6 +105,7 @@ Admin_AddProduct::~Admin_AddProduct() {
     }
 }
 
+// Xử lý sự kiện người dùng
 void Admin_AddProduct::handleEvent(const SDL_Event& e) {
     if(textbox_code) textbox_code->handleEvent(e);
     if(textbox_name) textbox_name->handleEvent(e);
@@ -126,12 +122,10 @@ void Admin_AddProduct::handleEvent(const SDL_Event& e) {
         std::string filePath = OpenFileDialog();
         if (!filePath.empty()) {
             imagePath = filePath;
-            // Xóa texture cũ nếu có
             if (imageTexture) {
                 SDL_DestroyTexture(imageTexture);
                 imageTexture = nullptr;
             }
-            // Tải ảnh mới
             SDL_Surface* surface = IMG_Load(imagePath.c_str());
             if (surface) {
                 SDL_Renderer* renderer = app->getRenderer();
@@ -159,6 +153,7 @@ void Admin_AddProduct::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật trạng thái UI mỗi frame
 void Admin_AddProduct::update() {
     if(textbox_code) textbox_code->update();
     if(textbox_name) textbox_name->update();
@@ -168,6 +163,7 @@ void Admin_AddProduct::update() {
     if(button_addImage) button_addImage->update();
 }
 
+// Vẽ giao diện lên màn hình
 void Admin_AddProduct::render(SDL_Renderer* renderer) {
     if(label_title) label_title->render(renderer);
     if(label_productCode) label_productCode->render(renderer);
@@ -183,12 +179,10 @@ void Admin_AddProduct::render(SDL_Renderer* renderer) {
     if(button_back) button_back->render(renderer);
     if(button_addImage) button_addImage->render(renderer);
 
-    // Render ảnh đã chọn
     if (imageTexture) {
         SDL_FRect imageRect = {1350.0f, 280.0f, 600.0f, 350.0f};
         SDL_RenderTexture(renderer, imageTexture, nullptr, &imageRect);
     } else {
-        // Render placeholder khi chưa chọn ảnh
         SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
         SDL_FRect imageRect = {1350.0f, 280.0f, 600.0f, 350.0f};
         SDL_RenderFillRect(renderer, &imageRect);
@@ -210,6 +204,7 @@ void Admin_AddProduct::render(SDL_Renderer* renderer) {
     }
 }
 
+// Reset form khi vào màn hình
 void Admin_AddProduct::onEnter() {
     clearForm();
 }
@@ -217,6 +212,7 @@ void Admin_AddProduct::onEnter() {
 void Admin_AddProduct::onExit() {
 }
 
+// Kiểm tra dữ liệu đầu vào
 bool Admin_AddProduct::validateInput() {
     std::string code = textbox_code->getText();
     std::string name = textbox_name->getText();
@@ -226,11 +222,9 @@ bool Admin_AddProduct::validateInput() {
     errorName = false;
     errorPrice = false;
 
-    // Validate code
     if (code.empty()) {
         errorCode = true;
     } else {
-        // Check if code already exists
         std::ifstream file("data/Item/Item.txt");
         std::string line;
         while (std::getline(file, line)) {
@@ -239,18 +233,16 @@ bool Admin_AddProduct::validateInput() {
                 file.close();
                 break;
             }
-            std::getline(file, line); // skip name
-            std::getline(file, line); // skip price
+            std::getline(file, line);
+            std::getline(file, line);
         }
         file.close();
     }
 
-    // Validate name
     if (name.empty()) {
         errorName = true;
     }
 
-    // Validate price
     if (priceStr.empty()) {
         errorPrice = true;
     } else {
@@ -267,6 +259,7 @@ bool Admin_AddProduct::validateInput() {
     return !errorCode && !errorName && !errorPrice;
 }
 
+// Lưu sản phẩm và ảnh vào hệ thống
 bool Admin_AddProduct::saveProduct() {
     std::string code = textbox_code->getText();
     std::string name = textbox_name->getText();
@@ -275,10 +268,7 @@ bool Admin_AddProduct::saveProduct() {
     try {
         int price = std::stoi(priceStr);
 
-        // Save image to data/Image/ folder with product code as filename
         if (!imagePath.empty()) {
-            // SaveImageToSystem returns relative path, but we just need to copy the file
-            // Let's directly copy image to data/Image/<code>.png
             std::string destImagePath = "data/Image/" + code + ".png";
             std::ifstream src(imagePath, std::ios::binary);
             std::ofstream dst(destImagePath, std::ios::binary);
@@ -286,11 +276,9 @@ bool Admin_AddProduct::saveProduct() {
                 dst << src.rdbuf();
                 dst.close();
                 src.close();
-                std::cerr << "Ảnh đã lưu: " << destImagePath << std::endl;
             }
         }
 
-        // Append to Item.txt file
         std::ofstream file("data/Item/Item.txt", std::ios::app);
         if (!file.is_open()) {
             std::cerr << "Không thể mở file Item.txt!" << std::endl;
@@ -303,7 +291,6 @@ bool Admin_AddProduct::saveProduct() {
 
         file.close();
 
-        std::cerr << "Đã thêm sản phẩm: " << code << std::endl;
         return true;
     } catch (...) {
         std::cerr << "Lỗi khi lưu sản phẩm!" << std::endl;
@@ -316,7 +303,6 @@ void Admin_AddProduct::clearForm() {
     if (textbox_name) textbox_name->setText("");
     if (textbox_price) textbox_price->setText("");
     
-    // Xóa texture ảnh cũ
     if (imageTexture) {
         SDL_DestroyTexture(imageTexture);
         imageTexture = nullptr;

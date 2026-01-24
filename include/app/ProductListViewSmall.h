@@ -11,12 +11,12 @@ private:
     std::string dataFilePath;
     std::vector<Itemrow*> rows;
     float scrollOffsetY = 0.0f;
-    float rowHeight = 140.0f; // slightly smaller rows
-    float startX = 0.0f; // computed as (windowWidth - sidebarWidth)
-    float startY = 100.0f; // small top padding (no header)
-    float viewHeight = 1000.0f; // will be updated dynamically
-    float headerHeight = 0.0f; // no header area for compact view
-    float sidebarWidth = 1000.0f; // fixed sidebar width (1.5x expanded)
+    float rowHeight = 140.0f;
+    float startX = 0.0f;
+    float startY = 100.0f;
+    float viewHeight = 1000.0f;
+    float headerHeight = 0.0f;
+    float sidebarWidth = 1000.0f;
 
     Label* hdrCode = nullptr;
     Label* hdrName = nullptr;
@@ -38,19 +38,17 @@ public:
         rows.clear();
         scrollOffsetY = 0.0f;
 
-        // compute sidebar position and viewHeight from window
         float rowW = sidebarWidth;
         if (app && app->getWindow()) {
             int winW = 0, winH = 0;
             SDL_GetWindowSize(app->getWindow(), &winW, &winH);
             rowW = sidebarWidth;
-            startX = static_cast<float>(winW) - sidebarWidth; // flush to right edge
-            viewHeight = static_cast<float>(winH) - startY - 40.0f; // leave footer margin
+            startX = static_cast<float>(winW) - sidebarWidth;
+            viewHeight = static_cast<float>(winH) - startY - 40.0f;
         }
 
         for (int i = 0; i < (int)dataItems.size(); ++i) {
             float currentY = startY + (i * rowHeight);
-            // NVHD sidebar uses delete to remove from invoice; keep delete visible here
             Itemrow* newRow = new Itemrow(renderer, dataItems[i], startX, currentY, rowW, rowHeight, app, true);
             rows.push_back(newRow);
         }
@@ -92,16 +90,13 @@ public:
         if (app && app->getWindow()) {
             int winW = 0, winH = 0; SDL_GetWindowSize(app->getWindow(), &winW, &winH);
             startX = static_cast<float>(winW) - sidebarWidth;
-            // use full available height from startY to bottom
             viewHeight = static_cast<float>(winH) - startY;
         }
 
-        // Draw the white sidebar background starting at startY and extending to bottom
         SDL_FRect bgRect = { startX, startY, rowW, viewHeight };
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, &bgRect);
 
-        // Clip and render rows directly starting at startY (now background covers full height)
         SDL_Rect clipRect = { (int)startX, (int)startY, (int)rowW, (int)viewHeight };
         SDL_SetRenderClipRect(renderer, &clipRect);
         for (int i = 0; i < (int)rows.size(); ++i) {
@@ -112,14 +107,12 @@ public:
         SDL_SetRenderClipRect(renderer, nullptr);
     }
 
-    // Update interactive elements (hover states) for each row
     void update() {
         for (auto row : rows) {
             if (row) row->update();
         }
     }
 
-    // Forward events to child rows so their buttons can process clicks
     void handleEvent(const SDL_Event& e) {
         if (e.type == SDL_EVENT_MOUSE_MOTION || e.type == SDL_EVENT_MOUSE_BUTTON_DOWN || e.type == SDL_EVENT_MOUSE_BUTTON_UP) {
             for (auto row : rows) {

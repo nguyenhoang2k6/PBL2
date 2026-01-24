@@ -11,7 +11,6 @@ class TextBox;
 class Admin_AddEmploy : public Screen
 {
 private:
-    // Labels
     Label* label_title;
     Label* label_maNV;
     Label* label_ten;
@@ -29,7 +28,6 @@ private:
     Label* label_errorPassword;
     Label* label_success;
 
-    // TextBoxes
     TextBox* textbox_maNV;
     TextBox* textbox_ten;
     TextBox* textbox_chucVu;
@@ -38,11 +36,9 @@ private:
     TextBox* textbox_sdt;
     TextBox* textbox_password;
 
-    // Buttons
     Button* button_save;
     Button* button_back;
 
-    // Error flags
     bool errorMaNV;
     bool errorTen;
     bool errorChucVu;

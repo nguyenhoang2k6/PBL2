@@ -1,9 +1,11 @@
 #include <app/Button.h>
 
+// Khởi tạo nút bấm với nhãn và màu
 Button::Button(float x, float y, float w, float h, SDL_Color color,const string& text, SDL_Renderer* renderer, TTF_Font* f, SDL_Color tColor):rect{x,y,w,h},bgColor(color),label(text),hovered(false),pressed(false),wasClicked(false),font(f),textColor(tColor) ,renderer(renderer){
     updateTextTexture();
 }
 
+// Hủy tài nguyên texture của nút
 Button::~Button() {
     if(textTexture) {
         SDL_DestroyTexture(textTexture);
@@ -11,6 +13,7 @@ Button::~Button() {
     }
 }
 
+// Cập nhật texture của nhãn nút
 void Button::updateTextTexture() {
     if (textTexture) {
         SDL_DestroyTexture(textTexture);
@@ -31,6 +34,7 @@ void Button::updateTextTexture() {
     }
 }
 
+// Vẽ nút lên màn hình
 void Button::render(SDL_Renderer* renderer) {
     SDL_Color renderColor = bgColor;
     if (pressed) {
@@ -58,6 +62,7 @@ void Button::render(SDL_Renderer* renderer) {
     }
 }
 
+// Cập nhật trạng thái hover/click mỗi frame
 void Button::update() {
     wasClicked = false;
 
@@ -71,6 +76,7 @@ void Button::update() {
     }
 }
 
+// Xử lý sự kiện chuột cho nút
 void Button::handleEvent(const SDL_Event& e) {
     if (hovered) {
         if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
@@ -96,15 +102,18 @@ void Button::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Kiểm tra chuột có nằm trong nút
 bool Button::isHovered(float mouseX, float mouseY) const {
     return mouseX >= rect.x && mouseX <= rect.x + rect.w &&
            mouseY >= rect.y && mouseY <= rect.y + rect.h;
 }
 
+// Kiểm tra trạng thái click
 bool Button::isClicked() const {
     return wasClicked;
 }
 
+// Đặt lại nhãn và texture nút
 void Button::setLabel(const string& text) {
     label = text;
 
@@ -122,10 +131,12 @@ void Button::setLabel(const string& text) {
     }
 }
 
+// Đổi màu nền nút
 void Button::setColor(SDL_Color color) {
     bgColor = color;
 }
 
+// Lấy nhãn nút
 string Button::getLabel() const {
     return label;
 }

@@ -6,6 +6,7 @@
 #include <app/Color.h>
 #include <app/PasswordNV.h>
 
+// Khởi tạo màn hình đổi mật khẩu nhân viên
 NV_NewPass::NV_NewPass(App* app) :Screen(app) {
     label_newpass = nullptr;
     label_eror1 = nullptr;
@@ -21,6 +22,7 @@ NV_NewPass::NV_NewPass(App* app) :Screen(app) {
     success = false;
 
 }
+// Khởi tạo UI đổi mật khẩu nhân viên
 bool NV_NewPass::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -49,8 +51,7 @@ bool NV_NewPass::Init() {
     return true;
 }
 
-
-
+// Giải phóng tài nguyên màn hình đổi mật khẩu
 NV_NewPass::~NV_NewPass() {
     delete label_newpass;
     delete label_eror1;
@@ -63,6 +64,7 @@ NV_NewPass::~NV_NewPass() {
     delete button_back;
 }
 
+// Xử lý nhập mật khẩu và lưu
 void NV_NewPass::handleEvent(const SDL_Event& e) {
     if(textbox_passwordOld) {textbox_passwordOld->handleEvent(e);}
     if(textbox_passwordNew1) {textbox_passwordNew1->handleEvent(e);}
@@ -106,6 +108,7 @@ void NV_NewPass::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật trạng thái nút và textbox
 void NV_NewPass::update() {
     if(textbox_passwordOld) {textbox_passwordOld->update();}
     if(textbox_passwordNew1) {textbox_passwordNew1->update();}
@@ -114,6 +117,7 @@ void NV_NewPass::update() {
     if(button_back) {button_back->update();}
 }
 
+// Vẽ giao diện đổi mật khẩu nhân viên
 void NV_NewPass::render(SDL_Renderer* renderer) {
     if(label_newpass) {label_newpass->render(renderer);}
     if(textbox_passwordOld) {textbox_passwordOld->render(renderer);}
@@ -121,7 +125,6 @@ void NV_NewPass::render(SDL_Renderer* renderer) {
     if(textbox_passwordNew2) {textbox_passwordNew2->render(renderer);}
     if(button_save) {button_save->render(renderer);}
     if(button_back) {button_back->render(renderer);}
-
 
     if (error1 && label_eror1) {
         label_eror1->render(renderer);
@@ -134,6 +137,7 @@ void NV_NewPass::render(SDL_Renderer* renderer) {
     }
 }
 
+// Reset dữ liệu khi vào màn hình
 void NV_NewPass::onEnter() {
     textbox_passwordOld->setText("");
     textbox_passwordNew1->setText("");
@@ -143,5 +147,6 @@ void NV_NewPass::onEnter() {
     success = false;
 }
 
+// Xử lý khi rời màn hình đổi mật khẩu
 void NV_NewPass::onExit() {
 }

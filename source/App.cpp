@@ -19,6 +19,7 @@
 #include <app/Admin_AddEmploy.h>
 #include <app/Color.h>
 
+// Khởi tạo đối tượng ứng dụng
 App::App() : 
     running(false),
     window(nullptr), 
@@ -32,6 +33,7 @@ App::App() :
 {
 }
 
+// Khởi tạo SDL, font và các màn hình
 bool App::init() {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
@@ -345,7 +347,6 @@ bool App::init() {
         SDL_Quit();
         return false;
     }
-    // Create Add Employee screen
     Screen* adminAddEmploy = new Admin_AddEmploy(this);
     if (!adminAddEmploy->Init()) {
         std::cerr << "Không khởi tạo được Admin_AddEmploy" << std::endl;
@@ -386,12 +387,12 @@ bool App::init() {
     ScreenCache["LoginAdmin"] = loginAdmin;
     ScreenCache["LoginNV"] = loginNV;
     ScreenCache["MainMenu"] = mainMenu;
-    // còn các màn hình khác sẽ được khởi tạo tương tự ở đây và thêm vào ScreenCache
     currentScreen = ScreenCache["MainMenu"];
     this->running = true;
     return true;
 }
 
+// Giải phóng tài nguyên ứng dụng
 App::~App() {
     for (auto& pair : ScreenCache) {
         delete pair.second;
@@ -408,6 +409,7 @@ App::~App() {
     SDL_Quit();
 }
 
+// Vòng lặp chính của ứng dụng
 void App::run() {
     if (currentScreen == nullptr) {
         running = false;
@@ -439,6 +441,7 @@ void App::run() {
     }
 }
 
+// Chuyển sang màn hình được chỉ định
 void App::changeScreen(const std::string& screenName) {
     if(currentScreen) {
         currentScreen->onExit();

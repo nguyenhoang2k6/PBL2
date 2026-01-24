@@ -6,6 +6,7 @@
 #include <app/Color.h>
 #include <app/PasswordNV.h>
 
+// Khởi tạo màn hình đăng nhập nhân viên
 LoginScreenNV::LoginScreenNV(App* app) :Screen(app) {
     label_LoginNV = nullptr;
     label_eror = nullptr;
@@ -16,6 +17,7 @@ LoginScreenNV::LoginScreenNV(App* app) :Screen(app) {
     loginError = false;
 
 }
+// Khởi tạo UI đăng nhập nhân viên
 bool LoginScreenNV::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -41,8 +43,7 @@ bool LoginScreenNV::Init() {
     return true;
 }
 
-
-
+// Giải phóng tài nguyên màn hình đăng nhập nhân viên
 LoginScreenNV::~LoginScreenNV() {
     delete label_LoginNV;
     delete label_eror;
@@ -52,6 +53,7 @@ LoginScreenNV::~LoginScreenNV() {
     delete button_back;
 }
 
+// Xử lý sự kiện nhập và nút bấm
 void LoginScreenNV::handleEvent(const SDL_Event& e) {
     if (textbox_username) {
         textbox_username->handleEvent(e);
@@ -84,6 +86,7 @@ void LoginScreenNV::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật trạng thái UI mỗi frame
 void LoginScreenNV::update() {
     if (textbox_username) {
         textbox_username->update();
@@ -99,6 +102,7 @@ void LoginScreenNV::update() {
     }
 }
 
+// Vẽ giao diện đăng nhập nhân viên
 void LoginScreenNV::render(SDL_Renderer* renderer) {
     if (label_LoginNV) {
         label_LoginNV->render(renderer);
@@ -120,11 +124,13 @@ void LoginScreenNV::render(SDL_Renderer* renderer) {
     }
 }
 
+// Reset dữ liệu khi vào màn hình
 void LoginScreenNV::onEnter() {
     textbox_username->setText("");
     textbox_password->setText("");
     loginError = false;
 }
 
+// Xử lý khi rời màn hình đăng nhập nhân viên
 void LoginScreenNV::onExit() {
 }

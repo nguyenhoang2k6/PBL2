@@ -6,7 +6,6 @@
 
 class NhanVien {
 private:
-    // Dữ liệu thành viên
     std::string maNV;
     std::string ten;
     std::string chucVu;
@@ -15,11 +14,9 @@ private:
     std::string sdt;
 
 public:
-    // Constructor mặc định & đầy đủ
     NhanVien();
     NhanVien(std::string ma, std::string t, std::string cv, int age, std::string dc, std::string phone);
 
-    // Getters (Để lấy dữ liệu ra hiển thị)
     std::string getMaNV() const { return maNV; }
     std::string getTen() const { return ten; }
     std::string getChucVu() const { return chucVu; }
@@ -27,9 +24,6 @@ public:
     std::string getDiaChi() const { return diaChi; }
     std::string getSDT() const { return sdt; }
 
-    // --- CÁC HÀM QUẢN LÝ DỮ LIỆU (STATIC) ---
-    // Gọi trực tiếp: NhanVien::getAll(), NhanVien::add(...)
-    
     // 1. Lấy toàn bộ danh sách nhân viên từ file
     static std::vector<NhanVien> getAll();
 

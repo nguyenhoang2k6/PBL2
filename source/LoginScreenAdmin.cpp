@@ -6,6 +6,7 @@
 #include <app/Color.h>
 #include <app/PasswordQL.h>
 
+// Khởi tạo màn hình đăng nhập quản trị
 LoginScreenAdmin::LoginScreenAdmin(App* app) :Screen(app) {
     label_LoginAdmin = nullptr;
     label_eror = nullptr;
@@ -16,6 +17,7 @@ LoginScreenAdmin::LoginScreenAdmin(App* app) :Screen(app) {
     loginError = false;
 
 }
+// Khởi tạo UI đăng nhập quản trị
 bool LoginScreenAdmin::Init() {
     TTF_Font* font1 = app->getFont1();
     TTF_Font* font2 = app->getFont2();
@@ -41,8 +43,7 @@ bool LoginScreenAdmin::Init() {
     return true;
 }
 
-
-
+// Giải phóng tài nguyên màn hình đăng nhập quản trị
 LoginScreenAdmin::~LoginScreenAdmin() {
     delete label_LoginAdmin;
     delete label_eror;
@@ -52,7 +53,7 @@ LoginScreenAdmin::~LoginScreenAdmin() {
     delete button_back;
 }
 
-
+// Xử lý sự kiện nhập và nút bấm
 void LoginScreenAdmin::handleEvent(const SDL_Event& e) {
     if (textbox_username) {
         textbox_username->handleEvent(e);
@@ -83,6 +84,7 @@ void LoginScreenAdmin::handleEvent(const SDL_Event& e) {
     }
 }
 
+// Cập nhật trạng thái UI mỗi frame
 void LoginScreenAdmin::update() {
     if (textbox_username) {
         textbox_username->update();
@@ -98,6 +100,7 @@ void LoginScreenAdmin::update() {
     }
 }
 
+// Vẽ giao diện đăng nhập quản trị
 void LoginScreenAdmin::render(SDL_Renderer* renderer) {
     if (label_LoginAdmin) {
         label_LoginAdmin->render(renderer);
@@ -119,11 +122,13 @@ void LoginScreenAdmin::render(SDL_Renderer* renderer) {
     }
 }
 
+// Reset dữ liệu khi vào màn hình
 void LoginScreenAdmin::onEnter() {
     textbox_username->setText("");
     textbox_password->setText("");
     loginError = false;
 }
 
+// Xử lý khi rời màn hình đăng nhập quản trị
 void LoginScreenAdmin::onExit() {
 }

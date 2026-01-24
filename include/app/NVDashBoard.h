@@ -16,7 +16,6 @@ private:
     Button* button_doimk;
     Button* button_back;
 
-
 public:
     NVDashBoard(App* app);
     ~NVDashBoard();

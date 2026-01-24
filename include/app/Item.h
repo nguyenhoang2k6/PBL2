@@ -5,9 +5,6 @@
 // Khai báo sớm
 class Item;
 
-/**
- * @brief Class đại diện cho một Mặt hàng (Item)
- */
 class Item {
 private:
     std::string maItem;
@@ -15,13 +12,10 @@ private:
     int price;
 
 public:
-    // Constructor (Bạn nên có một constructor)
     Item() : price(0) {}
 
-    // Destructor
     ~Item() {}
 
-    // --- GETTERS (CẦN CÓ CONST) ---
     // Khai báo hàm getmaItem() LÀ const
     std::string getmaItem() const; 
 
@@ -40,8 +34,4 @@ public:
     friend std::ostream& operator<<(std::ostream &out, const Item &p);
     friend std::istream& operator>>(std::istream &in, Item &p);
     
-    // Nếu bạn không thể truy cập trực tiếp các biến private trong .cpp 
-    // (như ở phiên bản lỗi trước), hãy đảm bảo hai operator này là friend.
-
-    // ... Các hàm thành viên khác (nếu có)
 };

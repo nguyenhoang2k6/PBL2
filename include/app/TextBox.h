@@ -50,5 +50,3 @@ public:
     void setFocus(bool f) {focused = f;}
     bool isFocused() {return focused;}
 };
-
-
